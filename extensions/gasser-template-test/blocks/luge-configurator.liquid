@@ -1,0 +1,103 @@
+{% comment %}
+  App Block : Luge Configurateur 3D
+  Emplacement : extensions/[ton-extension]/blocks/luge-configurator.liquid
+  Utilisation : app block à ajouter via le thème éditeur (section "Product" ou page dédiée)
+{% endcomment %}
+
+<div class="luge-configurator-wrapper">
+  <div
+    id="luge-configurator-root"
+    data-img1="{% if block.settings.texture_1 %}{{ block.settings.texture_1 | image_url: width: 512 }}{% endif %}"
+    data-img2="{% if block.settings.texture_2 %}{{ block.settings.texture_2 | image_url: width: 512 }}{% endif %}"
+    data-img3="{% if block.settings.texture_3 %}{{ block.settings.texture_3 | image_url: width: 512 }}{% endif %}"
+    data-img4="{% if block.settings.texture_4 %}{{ block.settings.texture_4 | image_url: width: 512 }}{% endif %}"
+    data-img5="{% if block.settings.texture_5 %}{{ block.settings.texture_5 | image_url: width: 512 }}{% endif %}"
+    data-wood="{% if block.settings.texture_wood %}{{ block.settings.texture_wood | image_url: width: 512 }}{% endif %}"
+    data-guide="{% if block.settings.texture_guide %}{{ block.settings.texture_guide | image_url: width: 512 }}{% endif %}"
+    data-skating="{% if block.settings.texture_skating %}{{ block.settings.texture_skating | image_url: width: 512 }}{% endif %}"
+    data-hoop="{% if block.settings.texture_hoop %}{{ block.settings.texture_hoop | image_url: width: 512 }}{% endif %}"
+  ></div>
+</div>
+
+<script src="{{ 'luge-configurator.iife.js' | asset_url }}?v=14" defer></script>
+
+<style>
+  .luge-configurator-wrapper {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    box-sizing: border-box;
+  }
+
+  #luge-configurator-root {
+    width: 100%;
+    min-height: 500px;
+  }
+
+  #luge-configurator-root canvas {
+    display: block;
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Luge Configurateur 3D",
+  "target": "section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Textures du siège (couleurs)"
+    },
+    {
+      "type": "image_picker",
+      "id": "texture_1",
+      "label": "Texture couleur 1"
+    },
+    {
+      "type": "image_picker",
+      "id": "texture_2",
+      "label": "Texture couleur 2"
+    },
+    {
+      "type": "image_picker",
+      "id": "texture_3",
+      "label": "Texture couleur 3"
+    },
+    {
+      "type": "image_picker",
+      "id": "texture_4",
+      "label": "Texture couleur 4"
+    },
+    {
+      "type": "image_picker",
+      "id": "texture_5",
+      "label": "Texture couleur 5"
+    },
+    {
+      "type": "header",
+      "content": "Textures du châssis / pièces"
+    },
+    {
+      "type": "image_picker",
+      "id": "texture_wood",
+      "label": "Texture bois / châssis"
+    },
+    {
+      "type": "image_picker",
+      "id": "texture_guide",
+      "label": "Texture guide"
+    },
+    {
+      "type": "image_picker",
+      "id": "texture_skating",
+      "label": "Texture patins"
+    },
+    {
+      "type": "image_picker",
+      "id": "texture_hoop",
+      "label": "Texture cerceaux (hoop)"
+    }
+  ]
+}
+{% endschema %}

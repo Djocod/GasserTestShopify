@@ -1,0 +1,1219 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Luge — Viewer 3D Shopify</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Syne:wght@700;800&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      :root {
+        --bg: #0c0e10;
+        --surface: rgba(255, 255, 255, 0.04);
+        --surface-solid: #141618;
+        --border: rgba(255, 255, 255, 0.08);
+        --border-hover: rgba(255, 255, 255, 0.18);
+        --accent: #eaff00;
+        --accent-glow: rgba(232, 248, 64, 0.12);
+        --text: #f0ede8;
+        --muted: rgba(240, 237, 232, 0.4);
+        --mono: "DM Mono", monospace;
+        --display: "Syne", sans-serif;
+      }
+
+      html,
+      body {
+        width: 100%;
+        height: 100%;
+        background: var(--bg);
+        overflow: hidden;
+      }
+
+      /* ── Layout ── */
+      #root {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+      }
+      #canvas-wrap {
+        flex: 1;
+        position: relative;
+        cursor: grab;
+      }
+      #canvas-wrap:active {
+        cursor: grabbing;
+      }
+      canvas {
+        display: block;
+        width: 100% !important;
+        height: 100% !important;
+      }
+
+      /* ── Fond atmosphère ── */
+      .atmo {
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        z-index: 1;
+        background:
+          radial-gradient(
+            ellipse 60% 50% at 50% 30%,
+            rgba(232, 248, 64, 0.04) 0%,
+            transparent 70%
+          ),
+          radial-gradient(
+            ellipse 40% 60% at 80% 80%,
+            rgba(80, 120, 255, 0.05) 0%,
+            transparent 60%
+          );
+      }
+
+      /* ── Header ── */
+      #header {
+        position: absolute;
+        top: 16px;
+        left: 16px;
+        right: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        z-index: 10;
+        pointer-events: none;
+      }
+      .tag {
+        font-family: var(--mono);
+        font-size: 10px;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--muted);
+        background: var(--surface);
+        border: 1px solid var(--border);
+        padding: 4px 10px;
+        border-radius: 4px;
+        backdrop-filter: blur(8px);
+      }
+      .tag-accent {
+        color: var(--accent);
+        border-color: rgba(232, 248, 64, 0.25);
+        background: rgba(232, 248, 64, 0.06);
+      }
+      #product-name {
+        font-family: var(--display);
+        font-size: 22px;
+        font-weight: 800;
+        color: var(--text);
+        letter-spacing: -0.01em;
+        text-shadow: 0 0 40px rgba(232, 248, 64, 0.2);
+        pointer-events: none;
+      }
+
+      /* ── Hint ── */
+      #hint {
+        position: absolute;
+        bottom: 80px;
+        left: 50%;
+        transform: translateX(-50%);
+        font-family: var(--mono);
+        font-size: 10px;
+        letter-spacing: 0.1em;
+        color: var(--muted);
+        text-transform: uppercase;
+        white-space: nowrap;
+        pointer-events: none;
+        z-index: 10;
+        transition: opacity 0.8s ease;
+      }
+
+      /* ── Barre contrôles ── */
+      #ctrl-bar {
+        position: absolute;
+        bottom: 16px;
+        left: 50%;
+        transform: translateX(-50%);
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        background: var(--surface-solid);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 8px 10px;
+        z-index: 10;
+        backdrop-filter: blur(12px);
+      }
+      .btn {
+        font-family: var(--mono);
+        font-size: 10px;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--muted);
+        background: none;
+        border: 1px solid var(--border);
+        border-radius: 6px;
+        padding: 7px 14px;
+        cursor: pointer;
+        transition: all 0.15s ease;
+        white-space: nowrap;
+      }
+      .btn:hover {
+        color: var(--text);
+        border-color: var(--border-hover);
+        background: rgba(255, 255, 255, 0.04);
+      }
+      .btn.on {
+        color: var(--accent);
+        border-color: rgba(232, 248, 64, 0.35);
+        background: rgba(232, 248, 64, 0.07);
+      }
+      .sep {
+        width: 1px;
+        height: 18px;
+        background: var(--border);
+      }
+
+      /* ── Panneau couleurs ── */
+      #color-bar {
+        position: absolute;
+        bottom: 16px;
+        right: 16px;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        gap: 8px;
+        z-index: 10;
+      }
+      .color-label {
+        font-family: var(--mono);
+        font-size: 9px;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: var(--muted);
+      }
+      .swatches {
+        display: flex;
+        gap: 6px;
+      }
+      .sw {
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        border: 2px solid transparent;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        position: relative;
+      }
+      .sw:hover {
+        transform: scale(1.15);
+      }
+      .sw.active {
+        border-color: var(--accent);
+        box-shadow: 0 0 8px rgba(232, 248, 64, 0.4);
+      }
+
+      /* ── Panneau info slide ── */
+      #info-panel {
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        width: 220px;
+        background: var(--surface-solid);
+        border-left: 1px solid var(--border);
+        padding: 24px 18px;
+        z-index: 15;
+        overflow-y: auto;
+        transform: translateX(100%);
+        transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+      }
+      #info-panel.open {
+        transform: translateX(0);
+      }
+      .info-h {
+        font-family: var(--display);
+        font-size: 14px;
+        font-weight: 700;
+        color: var(--accent);
+        letter-spacing: 0.02em;
+      }
+      .info-row {
+        display: flex;
+        flex-direction: column;
+        gap: 3px;
+      }
+      .info-k {
+        font-family: var(--mono);
+        font-size: 9px;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--muted);
+      }
+      .info-v {
+        font-family: var(--mono);
+        font-size: 12px;
+        color: var(--text);
+      }
+      .info-sep {
+        height: 1px;
+        background: var(--border);
+      }
+
+      /* ── Loader ── */
+      #loader {
+        position: absolute;
+        inset: 0;
+        z-index: 30;
+        background: var(--bg);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 14px;
+        transition: opacity 0.6s ease;
+      }
+      #loader.done {
+        opacity: 0;
+        pointer-events: none;
+      }
+      .ring {
+        width: 36px;
+        height: 36px;
+        border: 1.5px solid var(--border);
+        border-top-color: var(--accent);
+        border-radius: 50%;
+        animation: spin 0.7s linear infinite;
+      }
+      .loader-txt {
+        font-family: var(--mono);
+        font-size: 10px;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--muted);
+      }
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+
+      /* ── Réticule centre ── */
+      .cross {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 20px;
+        height: 20px;
+        pointer-events: none;
+        z-index: 5;
+        opacity: 0.15;
+      }
+      .cross::before,
+      .cross::after {
+        content: "";
+        position: absolute;
+        background: var(--accent);
+      }
+      .cross::before {
+        width: 1px;
+        height: 100%;
+        left: 50%;
+        top: 0;
+      }
+      .cross::after {
+        height: 1px;
+        width: 100%;
+        top: 50%;
+        left: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root">
+      <div id="canvas-wrap">
+        <canvas id="c"></canvas>
+        <div class="atmo"></div>
+        <div class="cross"></div>
+      </div>
+
+      <!-- Loader -->
+      <div id="loader">
+        <div class="ring"></div>
+        <div class="loader-txt">Initialisation…</div>
+      </div>
+
+      <!-- Header -->
+      <div id="header">
+        <div style="display: flex; gap: 8px; align-items: center">
+          <div class="tag">Vue 3D</div>
+          <div class="tag tag-accent" id="prod-badge">Luge</div>
+        </div>
+        <div id="product-name"></div>
+      </div>
+
+      <!-- Hint -->
+      <div id="hint">Glisser · Zoomer · Double-clic pour reset</div>
+
+      <!-- Panneau couleurs -->
+      <div id="color-bar">
+        <div class="color-label">Couleur siège</div>
+        <div class="swatches" id="swatches"></div>
+        <div class="color-label" style="margin-top: 6px">Châssis</div>
+        <div class="swatches" id="swatches-chassis"></div>
+        <div class="color-label" style="margin-top: 6px">Guide</div>
+        <div class="swatches" id="swatches-guide"></div>
+      </div>
+
+      <!-- Contrôles -->
+      <div id="ctrl-bar">
+        <button class="btn" id="btn-reset">↺ Reset</button>
+        <button class="btn" id="btn-auto">▷ Auto</button>
+        <div class="sep"></div>
+        <button class="btn" id="btn-wire">⬡ Wire</button>
+        <div class="sep"></div>
+        <button class="btn" id="btn-info">ℹ Info</button>
+      </div>
+
+      <!-- Panneau info -->
+      <div id="info-panel">
+        <div class="info-h">Fiche Produit</div>
+        <div class="info-row">
+          <div class="info-k">Modèle</div>
+          <div class="info-v" id="info-name">Luge</div>
+        </div>
+        <div class="info-sep"></div>
+        <div class="info-row">
+          <div class="info-k">Châssis</div>
+          <div class="info-v">Acier galvanisé</div>
+        </div>
+        <div class="info-row">
+          <div class="info-k">Siège</div>
+          <div class="info-v">Polyéthylène HD</div>
+        </div>
+        <div class="info-row">
+          <div class="info-k">Patins</div>
+          <div class="info-v">Acier inox</div>
+        </div>
+        <div class="info-sep"></div>
+        <div class="info-row">
+          <div class="info-k">Dimensions</div>
+          <div class="info-v">110 × 45 × 22 cm</div>
+        </div>
+        <div class="info-row">
+          <div class="info-k">Poids</div>
+          <div class="info-v">3,2 kg</div>
+        </div>
+        <div class="info-row">
+          <div class="info-k">Charge max.</div>
+          <div class="info-v">80 kg</div>
+        </div>
+        <div class="info-sep"></div>
+        <div class="info-row">
+          <div class="info-k">Âge</div>
+          <div class="info-v">6 ans et plus</div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // ════════════════════════════════════════════════
+      //  PARAMÈTRES SHOPIFY (via URL)
+      //  Ex: luge-viewer.html?name=Luge+Pro&seat=%23ff2200&chassis=%23cccccc
+      // ════════════════════════════════════════════════
+      const qp = new URLSearchParams(location.search);
+      const INIT_NAME = qp.get("name") || "Luge";
+      const INIT_SEAT = qp.get("seat") || null;
+      const INIT_CHASSIS = qp.get("chassis") || null;
+      const INIT_GUIDE = qp.get("guide") || null;
+
+      document.getElementById("prod-badge").textContent = INIT_NAME;
+      document.getElementById("product-name").textContent = INIT_NAME;
+      document.getElementById("info-name").textContent = INIT_NAME;
+
+      // ════════════════════════════════════════════════
+      //  THREE.JS SETUP
+      // ════════════════════════════════════════════════
+      const canvas = document.getElementById("c");
+      const wrap = document.getElementById("canvas-wrap");
+      const loader = document.getElementById("loader");
+
+      const renderer = new THREE.WebGLRenderer({
+        canvas,
+        antialias: true,
+        alpha: true,
+      });
+      renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+      renderer.setClearColor(0x0c0e10, 1);
+
+      const scene = new THREE.Scene();
+      const camera = new THREE.PerspectiveCamera(38, 1, 0.01, 50);
+      camera.position.set(0, 0.5, 4.5);
+      camera.lookAt(0, 0.3, 0);
+
+      // Lumières
+      scene.add(new THREE.AmbientLight(0xffffff, 13));
+      const key = new THREE.DirectionalLight(0xffffff, 1.4);
+      key.position.set(4, 6, 4);
+      scene.add(key);
+      const rim = new THREE.DirectionalLight(0xe8f840, 0.5);
+      rim.position.set(-3, 1, -2);
+      scene.add(rim);
+      const fill = new THREE.DirectionalLight(0x4466ff, 0.3);
+      fill.position.set(0, -3, 3);
+      scene.add(fill);
+
+      // Grille sol
+      const grid = new THREE.GridHelper(6, 24, 0x1e2225, 0x181c1f);
+      grid.position.y = -0.45;
+      scene.add(grid);
+
+      // ════════════════════════════════════════════════
+      //  COULEURS & TEXTURES
+      // ════════════════════════════════════════════════
+      const SEAT_COLORS = [
+        "./img/beige.jpeg",
+        "./img/gurteblaurotgraugelbb(1).jpeg",
+        "./img/gurten-vilolett-blau-trkis-b(1).jpeg",
+        "./img/gurterotblaub(2).jpeg",
+        "./img/gurterotschwarzb(2).jpeg",
+      ];
+      const CHASSIS_COLORS = ["./img/bois-1.jpg"];
+      const GUIDE_COLORS = ["./img/cuir2.jpeg"];
+
+      let currentSeatColor = INIT_SEAT || SEAT_COLORS[0];
+      let currentChassisColor = INIT_CHASSIS || CHASSIS_COLORS[0];
+      let currentGuideColor = INIT_GUIDE || GUIDE_COLORS[0];
+
+      // Génère une texture depuis une image ou une couleur hex
+      function isImagePath(val) {
+        return (
+          val &&
+          (val.startsWith("./") ||
+            val.startsWith("/") ||
+            val.startsWith("http") ||
+            /\.(jpe?g|png|webp|gif|avif)$/i.test(val))
+        );
+      }
+
+      function colorTex(value) {
+        if (isImagePath(value)) {
+          const tex = new THREE.TextureLoader().load(
+            value,
+            // onLoad : force la mise à jour
+            (loadedTex) => {
+              loadedTex.needsUpdate = true;
+            },
+            undefined,
+            // onError : fallback couleur grise si l'image ne charge pas
+            () => {
+              const fb = document.createElement("canvas");
+              fb.width = fb.height = 4;
+              const ctx = fb.getContext("2d");
+              ctx.fillStyle = "#aaaaaa";
+              ctx.fillRect(0, 0, 4, 4);
+              tex.image = fb;
+              tex.needsUpdate = true;
+            },
+          );
+          tex.wrapS = tex.wrapT = THREE.RepeatWrapping;
+          tex.repeat.set(2, 2);
+          tex.encoding = THREE.sRGBEncoding;
+          return tex;
+        }
+        // Couleur hex → canvas 4×4
+        const c = document.createElement("canvas");
+        c.width = c.height = 4;
+        const ctx = c.getContext("2d");
+        ctx.fillStyle = value;
+        ctx.fillRect(0, 0, 4, 4);
+        const tex = new THREE.CanvasTexture(c);
+        tex.wrapS = tex.wrapT = THREE.RepeatWrapping;
+        return tex;
+      }
+
+      // ════════════════════════════════════════════════
+      //  GÉOMÉTRIE — ta TaperedTubeGeometry exacte
+      // ════════════════════════════════════════════════
+      class TaperedTubeGeometry extends THREE.BufferGeometry {
+        constructor(
+          curve,
+          tubularSegments,
+          radiusStart,
+          radiusEnd,
+          radialSegments,
+        ) {
+          super();
+          const frames = curve.computeFrenetFrames(tubularSegments, false);
+          const positions = [],
+            uvs = [],
+            indices = [];
+
+          for (let i = 0; i <= tubularSegments; i++) {
+            const t = i / tubularSegments;
+            const radius = THREE.MathUtils.lerp(radiusStart, radiusEnd, t);
+            const point = curve.getPoint(t);
+            const normal = frames.normals[i];
+            const binorm = frames.binormals[i];
+            for (let j = 0; j <= radialSegments; j++) {
+              const angle = (j / radialSegments) * Math.PI * 2;
+              const s = Math.sin(angle),
+                co = Math.cos(angle);
+              positions.push(
+                point.x + radius * (co * normal.x + s * binorm.x),
+                point.y + radius * (co * normal.y + s * binorm.y),
+                point.z + radius * (co * normal.z + s * binorm.z),
+              );
+              uvs.push(i / tubularSegments, j / radialSegments);
+            }
+          }
+          for (let i = 0; i < tubularSegments; i++) {
+            for (let j = 0; j < radialSegments; j++) {
+              const a = i * (radialSegments + 1) + j,
+                b = (i + 1) * (radialSegments + 1) + j;
+              indices.push(a, b, a + 1, b, b + 1, a + 1);
+            }
+          }
+          this.setAttribute(
+            "position",
+            new THREE.Float32BufferAttribute(positions, 3),
+          );
+          this.setAttribute("uv", new THREE.Float32BufferAttribute(uvs, 2));
+          this.setIndex(indices);
+          this.computeVertexNormals();
+        }
+      }
+
+      // ════════════════════════════════════════════════
+      //  CONSTRUCTEURS DES PIÈCES (tes fonctions)
+      // ════════════════════════════════════════════════
+
+      function mat(color) {
+        return new THREE.MeshStandardMaterial({
+          map: colorTex(color),
+          roughness: 0.45,
+          metalness: 0.1,
+          side: THREE.DoubleSide,
+        });
+      }
+      function matMetal(color) {
+        return new THREE.MeshStandardMaterial({
+          map: colorTex(color),
+          roughness: 0.2,
+          metalness: 0.8,
+          side: THREE.DoubleSide,
+        });
+      }
+
+      function mkSitV(color, ox, oy, oz, rx, ry, rz) {
+        const pts = [
+          new THREE.Vector3(0.16, -0.05, 0),
+          new THREE.Vector3(0.27, -0.1, 0),
+          new THREE.Vector3(0.28, -0.05, 0),
+          new THREE.Vector3(0, -0.04, 0),
+          new THREE.Vector3(-0.28, -0.05, 0),
+          new THREE.Vector3(-0.27, -0.1, 0),
+          new THREE.Vector3(-0.28, -0.1, 0),
+        ];
+        const m = new THREE.Mesh(
+          new TaperedTubeGeometry(
+            new THREE.CatmullRomCurve3(pts),
+            100,
+            0.04,
+            0.02,
+            2,
+          ),
+          mat(color),
+        );
+        m.position.set(ox, oy, oz);
+        m.rotation.set(rx, ry, rz);
+        m.name = "sit-v";
+        return m;
+      }
+
+      function mkSitH(color, ox, oy, oz, rx, ry, rz) {
+        const pts = [
+          new THREE.Vector3(0.16, -0.05, 0),
+          new THREE.Vector3(0.27, -0.1, 0),
+          new THREE.Vector3(0.28, -0.05, 0),
+          new THREE.Vector3(0, -0.04, 0),
+          new THREE.Vector3(-0.4, -0.05, 0),
+          new THREE.Vector3(-0.37, -0.07, 0),
+          new THREE.Vector3(-0.4, -0.1, 0),
+        ];
+        const m = new THREE.Mesh(
+          new TaperedTubeGeometry(
+            new THREE.CatmullRomCurve3(pts),
+            100,
+            0.04,
+            0.02,
+            2,
+          ),
+          mat(color),
+        );
+        m.position.set(ox, oy, oz);
+        m.rotation.set(rx, ry, rz);
+        m.name = "sit-h";
+        return m;
+      }
+
+      function mkTubeSit(color, ox, oy, oz, rx, ry, rz) {
+        const path = new THREE.LineCurve3(
+          new THREE.Vector3(0, -0.2, 0),
+          new THREE.Vector3(0, 0.2, 0),
+        );
+        const m = new THREE.Mesh(
+          new THREE.TubeGeometry(path, 1, 0.03, 32, false),
+          matMetal(color),
+        );
+        m.position.set(ox, oy, oz);
+        m.rotation.set(rx, ry, rz);
+        m.name = "tube-sit";
+        return m;
+      }
+
+      function mkTubeLeft(color, ox, oy, oz, rx, ry, rz) {
+        const path = new THREE.LineCurve3(
+          new THREE.Vector3(0, -0.09, 0),
+          new THREE.Vector3(0, 0.09, 0),
+        );
+        const m = new THREE.Mesh(
+          new THREE.TubeGeometry(path, 1, 0.028, 32, false),
+          matMetal(color),
+        );
+        m.position.set(ox, oy, oz);
+        m.rotation.set(rx, ry, rz);
+        m.name = "tube-left";
+        return m;
+      }
+
+      function mkTubeRight(color, ox, oy, oz, rx, ry, rz) {
+        const path = new THREE.LineCurve3(
+          new THREE.Vector3(0, -0.09, 0),
+          new THREE.Vector3(0, 0.09, 0),
+        );
+        const m = new THREE.Mesh(
+          new THREE.TubeGeometry(path, 1, 0.028, 32, false),
+          matMetal(color),
+        );
+        m.position.set(ox, oy, oz);
+        m.rotation.set(rx, ry, rz);
+        m.name = "tube-right";
+        return m;
+      }
+
+      function mkHoopRight(color, ox, oy, oz, rx, ry, rz) {
+        const pts = [
+          new THREE.Vector3(1.05, 0.02, 0.05),
+          new THREE.Vector3(0.75, 0, 0.03),
+          new THREE.Vector3(0.2, 0, 0.01),
+          new THREE.Vector3(0.1, 0, -0.01),
+          new THREE.Vector3(-0.1, 0.05, -0.03),
+          new THREE.Vector3(-0.5, 0.05, -0.05),
+        ];
+        const m = new THREE.Mesh(
+          new TaperedTubeGeometry(
+            new THREE.CatmullRomCurve3(pts),
+            100,
+            0.04,
+            0.01,
+            20,
+          ),
+          matMetal(color),
+        );
+        m.position.set(ox, oy, oz);
+        m.rotation.set(rx, ry, rz);
+        m.name = "hoop-right";
+        return m;
+      }
+
+      function mkHoopLeft(color, ox, oy, oz, rx, ry, rz) {
+        const pts = [
+          new THREE.Vector3(1.05, 0.02, -0.05),
+          new THREE.Vector3(0.75, 0, -0.03),
+          new THREE.Vector3(0.2, 0, -0.01),
+          new THREE.Vector3(0.1, 0, 0.01),
+          new THREE.Vector3(-0.1, 0.05, 0.03),
+          new THREE.Vector3(-0.5, 0.05, 0.05),
+        ];
+        const m = new THREE.Mesh(
+          new TaperedTubeGeometry(
+            new THREE.CatmullRomCurve3(pts),
+            100,
+            0.04,
+            0.01,
+            20,
+          ),
+          matMetal(color),
+        );
+        m.position.set(ox, oy, oz);
+        m.rotation.set(rx, ry, rz);
+        m.name = "hoop-left";
+        return m;
+      }
+
+      function mkSphere(color, r, ox, oy, oz) {
+        const m = new THREE.Mesh(
+          new THREE.SphereGeometry(r, 8, 8),
+          matMetal(color),
+        );
+        m.position.set(ox, oy, oz);
+        return m;
+      }
+
+      function mkPatinRight(color, ox, oy, oz) {
+        const pts = [
+          new THREE.Vector3(-0.9, -0.12, -0.1),
+          new THREE.Vector3(0, -0.12, -0.1),
+          new THREE.Vector3(0.6, -0.12, -0.1),
+          new THREE.Vector3(0.7, 0, -0.12),
+          new THREE.Vector3(0.63, 0.28, -0.2),
+        ];
+        const m = new THREE.Mesh(
+          new TaperedTubeGeometry(
+            new THREE.CatmullRomCurve3(pts),
+            20,
+            0.045,
+            0.01,
+            20,
+          ),
+          matMetal(color),
+        );
+        m.position.set(ox, oy, oz);
+        m.name = "patin-droit";
+        return m;
+      }
+
+      function mkPatinLeft(color, ox, oy, oz) {
+        const pts = [
+          new THREE.Vector3(-0.9, -0.12, 0.1),
+          new THREE.Vector3(0, -0.12, 0.1),
+          new THREE.Vector3(0.6, -0.12, 0.1),
+          new THREE.Vector3(0.7, 0, 0.12),
+          new THREE.Vector3(0.63, 0.28, 0.2),
+        ];
+        const m = new THREE.Mesh(
+          new TaperedTubeGeometry(
+            new THREE.CatmullRomCurve3(pts),
+            100,
+            0.045,
+            0.01,
+            20,
+          ),
+          matMetal(color),
+        );
+        m.position.set(ox, oy, oz);
+        m.name = "patin-gauche";
+        return m;
+      }
+
+      function mkGuide(color, ox, oy, oz, rx, ry, rz) {
+        const pts = [
+          new THREE.Vector3(0.7, 0.4, 0.15),
+          new THREE.Vector3(0.5, 0.4, 0.15),
+          new THREE.Vector3(0.2, 0.4, 0.15),
+          new THREE.Vector3(-0.2, 0.4, 0.15),
+          new THREE.Vector3(-0.4, 0.4, 0.15),
+          new THREE.Vector3(-0.2, 0.3, 0.15),
+          new THREE.Vector3(0.5, 0.4, 0.15),
+          new THREE.Vector3(0.7, 0.4, 0.15),
+        ];
+        const m = new THREE.Mesh(
+          new THREE.TubeGeometry(
+            new THREE.CatmullRomCurve3(pts),
+            100,
+            0.01,
+            20,
+          ),
+          mat(color),
+        );
+        m.position.set(ox, oy, oz);
+        m.rotation.set(rx, ry, rz);
+        m.name = "guide";
+        return m;
+      }
+
+      // ════════════════════════════════════════════════
+      //  ASSEMBLAGE — même positions que ton Luge.jsx
+      // ════════════════════════════════════════════════
+      let lugeGroup = new THREE.Group();
+      lugeGroup.name = "luge";
+
+      // Référence vers tous les meshes pour recoloration
+      const seatMeshes = [];
+      const chassisMeshes = [];
+      const guideMeshes = [];
+
+      function buildLuge(seatColor, chassisColor, guideColor) {
+        // Vider l'ancien groupe
+        while (lugeGroup.children.length) {
+          const c = lugeGroup.children[0];
+          c.geometry?.dispose();
+          c.material?.dispose();
+          lugeGroup.remove(c);
+        }
+        seatMeshes.length = 0;
+        chassisMeshes.length = 0;
+        guideMeshes.length = 0;
+
+        const S = seatColor,
+          C = chassisColor,
+          G = guideColor;
+
+        // — Siège vertical
+        [
+          [-0.7, 0.325, 0, 0, 1.57, 0],
+          [-0.6, 0.33, 0, 0, 1.57, 0],
+          [-0.5, 0.335, 0, 0, 1.57, 0],
+          [-0.4, 0.34, 0, 0, 1.57, 0],
+          [-0.3, 0.345, 0, 0, 1.57, 0],
+          [-0.2, 0.35, 0, 0, 1.57, 0],
+        ].forEach((p) => {
+          const m = mkSitV(S, ...p);
+          lugeGroup.add(m);
+          seatMeshes.push(m);
+        });
+
+        // — Siège horizontal
+        [
+          [-0.4, 0.34, 0.2, 0, 0, 0.05],
+          [-0.4, 0.34, 0.15, 0, 0, 0.05],
+          [-0.4, 0.34, 0.1, 0, 0, 0.05],
+          [-0.4, 0.34, 0.05, 0, 0, 0.05],
+          [-0.4, 0.34, 0, 0, 0, 0.05],
+          [-0.4, 0.34, -0.05, 0, 0, 0.05],
+          [-0.4, 0.34, -0.1, 0, 0, 0.05],
+          [-0.4, 0.34, -0.15, 0, 0, 0.05],
+          [-0.4, 0.34, -0.2, 0, 0, 0.05],
+        ].forEach((p) => {
+          const m = mkSitH(S, ...p);
+          lugeGroup.add(m);
+          seatMeshes.push(m);
+        });
+
+        // — Tubes siège
+        [
+          [-0.745, 0.25, 0, 1.57, 1.57, 0],
+          [-0.155, 0.285, 0, 1.57, 1.57, 0],
+        ].forEach((p) => {
+          const m = mkTubeSit(C, ...p);
+          lugeGroup.add(m);
+          chassisMeshes.push(m);
+        });
+
+        // — Chassis gauche
+        [
+          [-0.75, 0.17, -0.26, 0, -0.43, -0.4],
+          [-0.2, 0.16, -0.26, 0, 0.9, 0.2],
+        ].forEach((p) => {
+          const m = mkTubeLeft(C, ...p);
+          lugeGroup.add(m);
+          chassisMeshes.push(m);
+        });
+
+        // — Chassis droit
+        [
+          [-0.75, 0.15, 0.26, 0, 0.43, -0.4],
+          [-0.2, 0.16, 0.26, 0, -0.9, 0.2],
+        ].forEach((p) => {
+          const m = mkTubeRight(C, ...p);
+          lugeGroup.add(m);
+          chassisMeshes.push(m);
+        });
+
+        // — Hoops
+        const hr = mkHoopRight(C, 0.2, 0.28, 0.24, 1.57, 0, 3.13);
+        const hl = mkHoopLeft(C, 0.2, 0.28, -0.24, -1.57, 0, 3.13);
+        lugeGroup.add(hr);
+        lugeGroup.add(hl);
+        chassisMeshes.push(hr, hl);
+
+        // — Caps hoop bas
+        [
+          [-0.845, 0.23, 0.235],
+          [-0.845, 0.23, -0.235],
+        ].forEach((p) => {
+          const m = mkSphere(C, 0.04, ...p);
+          lugeGroup.add(m);
+          chassisMeshes.push(m);
+        });
+
+        // — Caps hoop haut
+        [
+          [0.7, 0.33, 0.184],
+          [0.7, 0.33, -0.184],
+        ].forEach((p) => {
+          const m = mkSphere(C, 0.01, ...p);
+          lugeGroup.add(m);
+          chassisMeshes.push(m);
+        });
+
+        // — Patins
+        const pr = mkPatinRight(C, 0, 0.19, 0.37);
+        const pl = mkPatinLeft(C, 0, 0.19, -0.37);
+        lugeGroup.add(pr);
+        lugeGroup.add(pl);
+        chassisMeshes.push(pr, pl);
+
+        // — Caps patins bas
+        [
+          [-0.9, 0.07, 0.27],
+          [-0.9, 0.07, -0.27],
+        ].forEach((p) => {
+          const m = mkSphere(C, 0.045, ...p);
+          lugeGroup.add(m);
+          chassisMeshes.push(m);
+        });
+
+        // — Caps patins haut
+        [
+          [0.63, 0.465, 0.171],
+          [0.63, 0.465, -0.171],
+        ].forEach((p) => {
+          const m = mkSphere(C, 0.01, ...p);
+          lugeGroup.add(m);
+          chassisMeshes.push(m);
+        });
+
+        // — Guides (couleur châssis)
+        [
+          [-0.03, 0.2, 0.52, -1.57, 0, -0.1],
+          [-0.03, 0.5, -0.52, 1.57, 0, -0.1],
+        ].forEach((p) => {
+          const m = mkGuide(G, ...p);
+          lugeGroup.add(m);
+          guideMeshes.push(m);
+        });
+      }
+
+      buildLuge(currentSeatColor, currentChassisColor, currentGuideColor);
+      scene.add(lugeGroup);
+
+      // Centrer la luge
+      lugeGroup.position.set(-0.15, -0.28, 0);
+
+      // Cacher le loader
+      setTimeout(() => loader.classList.add("done"), 800);
+
+      // ════════════════════════════════════════════════
+      //  SWATCHES COULEUR
+      // ════════════════════════════════════════════════
+      function mkSwatches(containerId, colors, onPick, initColor) {
+        const el = document.getElementById(containerId);
+        colors.forEach((val) => {
+          const sw = document.createElement("div");
+          sw.className = "sw" + (val === initColor ? " active" : "");
+          if (isImagePath(val)) {
+            sw.style.backgroundImage = `url('${val}')`;
+            sw.style.backgroundSize = "cover";
+            sw.style.backgroundPosition = "center";
+          } else {
+            sw.style.background = val;
+          }
+          sw.title = val;
+          sw.addEventListener("click", () => {
+            el.querySelectorAll(".sw").forEach((s) =>
+              s.classList.remove("active"),
+            );
+            sw.classList.add("active");
+            onPick(val);
+          });
+          el.appendChild(sw);
+        });
+      }
+
+      mkSwatches(
+        "swatches",
+        SEAT_COLORS,
+        (hex) => {
+          currentSeatColor = hex;
+          buildLuge(currentSeatColor, currentChassisColor, currentGuideColor);
+        },
+        currentSeatColor,
+      );
+
+      mkSwatches(
+        "swatches-chassis",
+        CHASSIS_COLORS,
+        (hex) => {
+          currentChassisColor = hex;
+          buildLuge(currentSeatColor, currentChassisColor, currentGuideColor);
+        },
+        currentChassisColor,
+      );
+
+      mkSwatches(
+        "swatches-guide",
+        GUIDE_COLORS,
+        (hex) => {
+          currentGuideColor = hex;
+          buildLuge(currentSeatColor, currentChassisColor, currentGuideColor);
+        },
+        currentGuideColor,
+      );
+
+      // ════════════════════════════════════════════════
+      //  ORBITE MANUELLE (drag + zoom + touch)
+      // ════════════════════════════════════════════════
+      let drag = false,
+        prevX = 0,
+        prevY = 0;
+      let rotX = 0.18,
+        rotY = -0.4,
+        tRotX = 0.18,
+        tRotY = -0.4;
+      let zoom = 4.5,
+        tZoom = 4.5;
+      let autoRot = false,
+        wireMode = false;
+
+      wrap.addEventListener("mousedown", (e) => {
+        drag = true;
+        prevX = e.clientX;
+        prevY = e.clientY;
+        hideHint();
+      });
+      window.addEventListener("mouseup", () => (drag = false));
+      window.addEventListener("mousemove", (e) => {
+        if (!drag) return;
+        tRotY += (e.clientX - prevX) * 0.008;
+        tRotX += (e.clientY - prevY) * 0.005;
+        tRotX = Math.max(-1, Math.min(1, tRotX));
+        prevX = e.clientX;
+        prevY = e.clientY;
+      });
+      wrap.addEventListener(
+        "wheel",
+        (e) => {
+          tZoom += e.deltaY * 0.004;
+          tZoom = Math.max(1.5, Math.min(8, tZoom));
+        },
+        { passive: true },
+      );
+      wrap.addEventListener("dblclick", resetView);
+
+      // Touch
+      let t0x = 0,
+        t0y = 0;
+      wrap.addEventListener(
+        "touchstart",
+        (e) => {
+          drag = true;
+          t0x = e.touches[0].clientX;
+          t0y = e.touches[0].clientY;
+          hideHint();
+        },
+        { passive: true },
+      );
+      window.addEventListener("touchend", () => (drag = false));
+      window.addEventListener(
+        "touchmove",
+        (e) => {
+          if (!drag) return;
+          tRotY += (e.touches[0].clientX - t0x) * 0.008;
+          tRotX += (e.touches[0].clientY - t0y) * 0.005;
+          tRotX = Math.max(-1, Math.min(1, tRotX));
+          t0x = e.touches[0].clientX;
+          t0y = e.touches[0].clientY;
+        },
+        { passive: true },
+      );
+
+      function resetView() {
+        tRotX = 0.18;
+        tRotY = -0.4;
+        tZoom = 4.5;
+      }
+
+      const hint = document.getElementById("hint");
+      let hintGone = false;
+      function hideHint() {
+        if (!hintGone) {
+          hint.style.opacity = "0";
+          hintGone = true;
+        }
+      }
+      setTimeout(hideHint, 4000);
+
+      // ════════════════════════════════════════════════
+      //  BOUTONS
+      // ════════════════════════════════════════════════
+      document.getElementById("btn-reset").addEventListener("click", resetView);
+
+      const btnAuto = document.getElementById("btn-auto");
+      btnAuto.addEventListener("click", () => {
+        autoRot = !autoRot;
+        btnAuto.classList.toggle("on", autoRot);
+        btnAuto.textContent = autoRot ? "⏸ Auto" : "▷ Auto";
+      });
+
+      const btnWire = document.getElementById("btn-wire");
+      btnWire.addEventListener("click", () => {
+        wireMode = !wireMode;
+        btnWire.classList.toggle("on", wireMode);
+        lugeGroup.traverse((o) => {
+          if (o.isMesh) o.material.wireframe = wireMode;
+        });
+      });
+
+      const btnInfo = document.getElementById("btn-info");
+      const infoPanel = document.getElementById("info-panel");
+      let infoOpen = false;
+      btnInfo.addEventListener("click", () => {
+        infoOpen = !infoOpen;
+        infoPanel.classList.toggle("open", infoOpen);
+        btnInfo.classList.toggle("on", infoOpen);
+      });
+
+      // ════════════════════════════════════════════════
+      //  RESIZE
+      // ════════════════════════════════════════════════
+      function resize() {
+        const w = wrap.clientWidth,
+          h = wrap.clientHeight;
+        renderer.setSize(w, h, false);
+        camera.aspect = w / h;
+        camera.updateProjectionMatrix();
+      }
+      window.addEventListener("resize", resize);
+      resize();
+
+      // ════════════════════════════════════════════════
+      //  BOUCLE D'ANIMATION
+      // ════════════════════════════════════════════════
+      const clock = new THREE.Clock();
+
+      function animate() {
+        requestAnimationFrame(animate);
+        const dt = clock.getDelta();
+
+        if (autoRot && !drag) tRotY += dt * 0.5;
+
+        rotX += (tRotX - rotX) * 0.09;
+        rotY += (tRotY - rotY) * 0.09;
+        zoom += (tZoom - zoom) * 0.09;
+
+        lugeGroup.rotation.x = rotX;
+        lugeGroup.rotation.y = rotY;
+        camera.position.z = zoom;
+        camera.lookAt(0, 0.05, 0);
+
+        renderer.render(scene, camera);
+      }
+      animate();
+    </script>
+  </body>
+</html>
