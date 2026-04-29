@@ -16,6 +16,7 @@ export default defineConfig({
       formats: ["iife"],
     },
     rollupOptions: {
+      // Rien d'external — tout est bundlé dans le fichier IIFE
       output: {
         intro:
           'if(typeof process==="undefined"){var process={env:{NODE_ENV:"production"}};}',
@@ -23,5 +24,6 @@ export default defineConfig({
     },
     outDir: "extensions/gasser-template-test/assets",
     emptyOutDir: false,
+    chunkSizeWarningLimit: 2000,
   },
 });

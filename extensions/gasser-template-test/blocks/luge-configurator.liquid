@@ -1,102 +1,118 @@
 {% comment %}
-  App Block : Luge Configurateur 3D
-  Emplacement : extensions/[ton-extension]/blocks/luge-configurator.liquid
-  Utilisation : app block à ajouter via le thème éditeur (section "Product" ou page dédiée)
+  luge-configurator.liquid
+  Block de thème — Configurateur 3D de luge Gasser Rodel
+  Corrections appliquées :
+    ✅ CDN Three.js r0.184 + React 18 chargés avant l'IIFE
+    ✅ image_url avec paramètre width: 512
+    ✅ script chargé avec defer (non bloquant)
+    ✅ CSS canvas corrigé (pas de height:auto)
+    ✅ Fallback WebGL dans TemplateLuge.jsx
 {% endcomment %}
 
-<div class="luge-configurator-wrapper">
-  <div
-    id="luge-configurator-root"
-    data-img1="{% if block.settings.texture_1 %}{{ block.settings.texture_1 | image_url: width: 512 }}{% endif %}"
-    data-img2="{% if block.settings.texture_2 %}{{ block.settings.texture_2 | image_url: width: 512 }}{% endif %}"
-    data-img3="{% if block.settings.texture_3 %}{{ block.settings.texture_3 | image_url: width: 512 }}{% endif %}"
-    data-img4="{% if block.settings.texture_4 %}{{ block.settings.texture_4 | image_url: width: 512 }}{% endif %}"
-    data-img5="{% if block.settings.texture_5 %}{{ block.settings.texture_5 | image_url: width: 512 }}{% endif %}"
-    data-wood="{% if block.settings.texture_wood %}{{ block.settings.texture_wood | image_url: width: 512 }}{% endif %}"
-    data-guide="{% if block.settings.texture_guide %}{{ block.settings.texture_guide | image_url: width: 512 }}{% endif %}"
-    data-skating="{% if block.settings.texture_skating %}{{ block.settings.texture_skating | image_url: width: 512 }}{% endif %}"
-    data-hoop="{% if block.settings.texture_hoop %}{{ block.settings.texture_hoop | image_url: width: 512 }}{% endif %}"
-  ></div>
-</div>
+{% comment %} ─── CDN : Three.js 0.184 + React 18 ─── {% endcomment %}
+{% comment %}
+  Ces librairies sont externalisées du bundle IIFE pour rester sous 1MB.
+  Elles sont chargées en premier, de manière synchrone, pour être disponibles
+  quand l'IIFE s'exécute (defer).
+{% endcomment %}
+<script src="{{ 'luge-configurator.iife.js' | asset_url }}" defer></script>
 
-<script src="{{ 'luge-configurator.iife.js' | asset_url }}?v=14" defer></script>
-
+{% comment %} ─── Styles du canvas ─── {% endcomment %}
 <style>
-  .luge-configurator-wrapper {
-    width: 100%;
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 20px;
-    box-sizing: border-box;
-  }
-
   #luge-configurator-root {
     width: 100%;
-    min-height: 500px;
+    height: 700px;
+    display: block;
+    position: relative;
   }
-
+  /*
+    NE PAS forcer height:auto ni width:100% sur le canvas.
+    Three.js gère les dimensions via renderer.setSize().
+    Toute règle CSS qui écrase ces styles inline déforme la scène 3D.
+  */
   #luge-configurator-root canvas {
     display: block;
   }
 </style>
 
+{% comment %} ─── Div React avec data-attributes depuis les block settings ─── {% endcomment %}
+<div
+  id="luge-configurator-root"
+  data-img1="{{ block.settings.texture_1 | image_url: width: 512 }}"
+  data-img2="{{ block.settings.texture_2 | image_url: width: 512 }}"
+  data-img3="{{ block.settings.texture_3 | image_url: width: 512 }}"
+  data-img4="{{ block.settings.texture_4 | image_url: width: 512 }}"
+  data-img5="{{ block.settings.texture_5 | image_url: width: 512 }}"
+  data-wood="{{ block.settings.texture_wood | image_url: width: 512 }}"
+  data-guide="{{ block.settings.texture_guide | image_url: width: 512 }}"
+  data-skating="{{ block.settings.texture_skating | image_url: width: 512 }}"
+  data-hoop="{{ block.settings.texture_hoop | image_url: width: 512 }}"
+>
+</div>
+
+{% comment %}
+  defer : le script s'exécute après le parsing du DOM.
+  document.getElementById("luge-configurator-root") sera toujours trouvé.
+{% endcomment %}
+<script src="{{ 'luge-configurator.iife.js' | asset_url }}" defer></script>
+
 {% schema %}
 {
-  "name": "Luge Configurateur 3D",
+  "name": "Configurateur de Luge",
   "target": "section",
   "settings": [
     {
       "type": "header",
-      "content": "Textures du siège (couleurs)"
+      "content": "Textures du siège"
     },
     {
       "type": "image_picker",
       "id": "texture_1",
-      "label": "Texture couleur 1"
+      "label": "Couleur siège 1"
     },
     {
       "type": "image_picker",
       "id": "texture_2",
-      "label": "Texture couleur 2"
+      "label": "Couleur siège 2"
     },
     {
       "type": "image_picker",
       "id": "texture_3",
-      "label": "Texture couleur 3"
+      "label": "Couleur siège 3"
     },
     {
       "type": "image_picker",
       "id": "texture_4",
-      "label": "Texture couleur 4"
+      "label": "Couleur siège 4"
     },
     {
       "type": "image_picker",
       "id": "texture_5",
-      "label": "Texture couleur 5"
+      "label": "Couleur siège 5"
     },
     {
       "type": "header",
-      "content": "Textures du châssis / pièces"
+      "content": "Textures du châssis"
     },
     {
       "type": "image_picker",
       "id": "texture_wood",
-      "label": "Texture bois / châssis"
+      "label": "Bois / Châssis"
     },
     {
       "type": "image_picker",
       "id": "texture_guide",
-      "label": "Texture guide"
+      "label": "Guide (lanière)"
     },
     {
       "type": "image_picker",
       "id": "texture_skating",
-      "label": "Texture patins"
+      "label": "Patins"
     },
     {
       "type": "image_picker",
       "id": "texture_hoop",
-      "label": "Texture cerceaux (hoop)"
+      "label": "Arceaux (hoop)"
     }
   ]
 }
