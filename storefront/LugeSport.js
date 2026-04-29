@@ -43,7 +43,7 @@ function createChassis(
   ];
 
   const curve = new THREE.CatmullRomCurve3(points);
-  const mat = new THREE.MeshBasicMaterial({ map: loadTex(colorPath) });
+  const mat = new THREE.MeshStandardMaterial({ map: loadTex(colorPath) });
   const mesh = new THREE.Mesh(
     new TaperedTubeGeometry(curve, 100, 0.04, 0.02, 2),
     mat,
@@ -63,7 +63,7 @@ function createTubeChassisSit(
   offRotY,
   offRotZ,
 ) {
-  const mat = new THREE.MeshBasicMaterial({
+  const mat = new THREE.MeshStandardMaterial({
     map: loadTex(colorPath),
   });
   const mesh = new THREE.Mesh(
@@ -104,7 +104,7 @@ function createTubeChassisLeft(
   ];
 
   const curve = new THREE.CatmullRomCurve3(points);
-  const mat = new THREE.MeshBasicMaterial({ map: loadTex(colorPath) });
+  const mat = new THREE.MeshStandardMaterial({ map: loadTex(colorPath) });
   const mesh = new THREE.Mesh(new THREE.TubeGeometry(curve, 3, 0.03, 2), mat);
   mesh.position.set(offsetX, offsetY, offsetZ);
   mesh.rotation.set(offRotX, offRotY, offRotZ);
@@ -138,7 +138,7 @@ function createTubeChassisRight(
   ];
 
   const curve = new THREE.CatmullRomCurve3(points);
-  const mat = new THREE.MeshBasicMaterial({ map: loadTex(colorPath) });
+  const mat = new THREE.MeshStandardMaterial({ map: loadTex(colorPath) });
   const mesh = new THREE.Mesh(new THREE.TubeGeometry(curve, 3, 0.03, 2), mat);
   mesh.position.set(offsetX, offsetY, offsetZ);
   mesh.rotation.set(offRotX, offRotY, offRotZ);
@@ -174,7 +174,7 @@ function createTubeHoopRight(
     new THREE.Vector3(-0.5, 0.05, -0.05),
   ];
   const curve = new THREE.CatmullRomCurve3(points);
-  const mat = new THREE.MeshBasicMaterial({
+  const mat = new THREE.MeshStandardMaterial({
     map: loadTex(colorPath),
     side: THREE.DoubleSide,
   });
@@ -215,7 +215,7 @@ function createTubeHoopLeft(
   ];
 
   const curve = new THREE.CatmullRomCurve3(points);
-  const mat = new THREE.MeshBasicMaterial({
+  const mat = new THREE.MeshStandardMaterial({
     map: loadTex(colorPath),
     side: THREE.DoubleSide,
   });
@@ -247,7 +247,7 @@ function createCapBottomHoop(
   offRotY,
   offRotZ,
 ) {
-  const mat = new THREE.MeshBasicMaterial({
+  const mat = new THREE.MeshStandardMaterial({
     map: loadTex(colorPath),
     side: THREE.DoubleSide,
   });
@@ -266,7 +266,7 @@ function createCapTopHoop(
   offRotY,
   offRotZ,
 ) {
-  const mat = new THREE.MeshBasicMaterial({
+  const mat = new THREE.MeshStandardMaterial({
     map: loadTex(colorPath),
     side: THREE.DoubleSide,
   });
@@ -287,7 +287,7 @@ function createPatinRight(colorPath, offsetX, offsetY, offsetZ) {
     new THREE.Vector3(0.63, 0.28, -0.2), // retroussé avant
   ];
   const curve = new THREE.CatmullRomCurve3(points);
-  const mat = new THREE.MeshBasicMaterial({
+  const mat = new THREE.MeshStandardMaterial({
     map: loadTex(colorPath),
     side: THREE.DoubleSide,
   });
@@ -308,7 +308,7 @@ function createPatinLeft(colorPath, offsetX, offsetY, offsetZ) {
     new THREE.Vector3(0.63, 0.28, 0.2), // retroussé avant
   ];
   const curve = new THREE.CatmullRomCurve3(points);
-  const mat = new THREE.MeshBasicMaterial({
+  const mat = new THREE.MeshStandardMaterial({
     map: loadTex(colorPath),
     side: THREE.DoubleSide,
   });
@@ -329,7 +329,7 @@ function createCapBottom(
   offRotY,
   offRotZ,
 ) {
-  const mat = new THREE.MeshBasicMaterial({
+  const mat = new THREE.MeshStandardMaterial({
     map: loadTex(colorPath),
     side: THREE.DoubleSide,
   });
@@ -348,7 +348,7 @@ function createCapTop(
   offRotY,
   offRotZ,
 ) {
-  const mat = new THREE.MeshBasicMaterial({
+  const mat = new THREE.MeshStandardMaterial({
     map: loadTex(colorPath),
     side: THREE.DoubleSide,
   });
@@ -380,7 +380,7 @@ function createGuide(
     new THREE.Vector3(0.7, 0.4, 0.15),
   ];
   const curve = new THREE.CatmullRomCurve3(points);
-  const mat = new THREE.MeshBasicMaterial({
+  const mat = new THREE.MeshStandardMaterial({
     map: loadTex(colorPath),
   });
   const mesh = new THREE.Mesh(
