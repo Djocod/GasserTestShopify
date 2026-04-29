@@ -4,6 +4,7 @@ import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import Luge from "./Luge";
 import LugeKind from "./LugeKind";
 import LugeSport from "./LugeSport";
+// import infoLuge from "../public/InfoLuge.json";
 
 const TemplateLuge = ({
   img1,
@@ -78,6 +79,12 @@ const TemplateLuge = ({
   // ✅ FIX : div Three.js séparé du contenu React
   const mountRef = useRef(null);
   const [scene, setScene] = useState(null);
+  // const SLED_TO_REF = {
+  //   Luge: "TR-1",
+  //   LugeKind: "TR-1.5",
+  //   LugeSport: "TR-2",
+  // };
+  // const currentLuge = infoLLuge.find((l) => l.ref === SLED_TO_REF[choiceSled]);
 
   useEffect(() => {
     const mount = mountRef.current;
@@ -105,11 +112,23 @@ const TemplateLuge = ({
 
     const controls = new OrbitControls(camera, renderer.domElement);
 
-    threScene.add(new THREE.AmbientLight(0xffffff, 0.7));
-    const dirLight = new THREE.DirectionalLight(0xffffff, 0.8);
-    dirLight.position.set(25, 20, 15);
-    threScene.add(dirLight);
-    threScene.add(new THREE.GridHelper(30, 30));
+    // threScene.add(new THREE.AmbientLight(0xffffff, 0.7));
+    // const dirLight = new THREE.DirectionalLight(0xffffff, 0.8);
+    // dirLight.position.set(25, 20, 15);
+    // threScene.add(dirLight);
+    // threScene.add(new THREE.GridHelper(30, 30));
+
+    // Lumières
+    threScene.add(new THREE.AmbientLight(0xffffff, 13));
+    const key = new THREE.DirectionalLight(0xffffff, 1.4);
+    key.position.set(4, 6, 4);
+    threScene.add(key);
+    const rim = new THREE.DirectionalLight(0xe8f840, 0.5);
+    rim.position.set(-3, 1, -2);
+    threScene.add(rim);
+    const fill = new THREE.DirectionalLight(0x4466ff, 0.3);
+    fill.position.set(0, -3, 3);
+    threScene.add(fill);
 
     camera.position.set(3, 4, -5);
     camera.lookAt(0, 0, 0);
@@ -197,10 +216,32 @@ const TemplateLuge = ({
           </button>
         </div>
       </form>
-
+      {/* <div>
+        {currentLuge && (
+          <div>
+            <h3>Fiche Produit</h3>
+            <p>Modèle</p>
+            <h3>{currentLuge.nameDe}</h3>
+            <p>{currentLuge.ref}</p>
+            <p>Châssis</p>
+            <p>{currentLuge.frame}</p>
+            <p>Siège</p>
+            <p>{currentLuge.sit}</p>
+            <p>Patins</p>
+            <p>{currentLuge.sled}</p>
+            <p>Dimensions</p>
+            <p>{currentLuge.size}</p>
+            <p>Poids</p>
+            <p>{currentLuge.weight}</p>
+            <p>Charge max.</p>
+            <p>{currentLuge.weightMax}</p>
+            <p>Âge</p>
+            <p>{currentLuge.years}</p>
+          </div>
+        )}
+      </div> */}
       {/* ✅ FIX PRINCIPAL : le div Three.js est séparé des composants React */}
       <div ref={mountRef} style={{ width: "100%", height: "700px" }} />
-
       {/* Les composants 3D sont en dehors du div mountRef */}
       {scene && choiceSled === "Luge" && (
         <Luge

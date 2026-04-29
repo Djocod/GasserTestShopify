@@ -1,0 +1,77 @@
+[
+  {
+    "ref": "TR-1",
+    "nameEn": "Touring toboggan, single seater",
+    "nameDe": "Tourenrodel 1-Sitzer",
+    "priceEur": 139.0,
+    "colors": [
+      "rot/blau",
+      "rot/schwarz",
+      "blau/violett/grün",
+      "rot/schwarz/beige",
+      "blau/rot/grau/gelb",
+      "regenbogen"
+    ],
+    "category": "Tobogganing (Tourenrodel)",
+    "urlEn": "https://www.shop.gasserrodel.at/en/toboggan/Tobogganing/Touring-toboggan-single-seater.html",
+    "urlDe": "https://www.shop.gasserrodel.at/rodeln-aus-tirol/Tourenrodel/Tourenrodel-1-Sitzer-von-Gasser-Rodel.html",
+    "notes": null,
+    "frame": "bois",
+    "sit": "Polyéthylène",
+    "sled": "bois",
+    "size": "110 × 45 × 22 cm",
+    "weight": "3.5 kg",
+    "weightMax": "80 max",
+    "years": " 6 ans et plus"
+  },
+  {
+    "ref": "TR-1.5",
+    "nameEn": "Touring toboggan, 1½-seater",
+    "nameDe": "Tourenrodel 1,5-Sitzer",
+    "priceEur": 149.0,
+    "colors": [
+      "rot/blau",
+      "rot/schwarz",
+      "blau/violett/grün",
+      "rot/schwarz/beige",
+      "blau/rot/grau/gelb",
+      "regenbogen"
+    ],
+    "category": "Tobogganing (Tourenrodel)",
+    "urlEn": "https://www.shop.gasserrodel.at/en/toboggan/Tobogganing/Touring-toboggan-1-seater.html",
+    "urlDe": "https://www.shop.gasserrodel.at/rodeln-aus-tirol/Tourenrodel/Tourenrodel-1-5-Sitzer-von-Gasser-Rodel.html",
+    "notes": null,
+    "frame": "bois",
+    "sit": "Polyéthylène",
+    "sled": "bois",
+    "size": "110 × 45 × 22 cm",
+    "weight": "3.5 kg",
+    "weightMax": "80 max",
+    "years": " 6 ans et plus"
+  },
+  {
+    "ref": "TR-2",
+    "nameEn": "Touring toboggan, double seater",
+    "nameDe": "Tourenrodel 2-Sitzer",
+    "priceEur": 159.0,
+    "colors": [
+      "rot/blau",
+      "rot/schwarz",
+      "blau/violett/grün",
+      "rot/schwarz/beige",
+      "blau/rot/grau/gelb",
+      "regenbogen"
+    ],
+    "category": "Tobogganing (Tourenrodel)",
+    "urlEn": "https://www.shop.gasserrodel.at/en/toboggan/Tobogganing/Touring-toboggan-double-seater.html",
+    "urlDe": "https://www.shop.gasserrodel.at/rodeln-aus-tirol/Tourenrodel/Tourenrodel-2-Sitzer-von-Gasser-Rodel.html",
+    "notes": null,
+    "frame": "bois",
+    "sit": "Polyéthylène",
+    "sled": "bois",
+    "size": "110 × 45 × 22 cm",
+    "weight": "3.5 kg",
+    "weightMax": "80 max",
+    "years": " 6 ans et plus"
+  }
+]

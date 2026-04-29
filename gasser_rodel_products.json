@@ -1,0 +1,521 @@
+{
+  "products": [
+    {
+      "ref": "TR-1",
+      "nameEn": "Touring toboggan, single seater",
+      "nameDe": "Tourenrodel 1-Sitzer",
+      "priceEur": 139.0,
+      "colors": [
+        "rot/blau",
+        "rot/schwarz",
+        "blau/violett/grün",
+        "rot/schwarz/beige",
+        "blau/rot/grau/gelb",
+        "regenbogen"
+      ],
+      "category": "Tobogganing (Tourenrodel)",
+      "urlEn": "https://www.shop.gasserrodel.at/en/toboggan/Tobogganing/Touring-toboggan-single-seater.html",
+      "urlDe": "https://www.shop.gasserrodel.at/rodeln-aus-tirol/Tourenrodel/Tourenrodel-1-Sitzer-von-Gasser-Rodel.html",
+      "notes": null
+    },
+    {
+      "ref": "TR-1.5",
+      "nameEn": "Touring toboggan, 1½-seater",
+      "nameDe": "Tourenrodel 1,5-Sitzer",
+      "priceEur": 149.0,
+      "colors": [
+        "rot/blau",
+        "rot/schwarz",
+        "blau/violett/grün",
+        "rot/schwarz/beige",
+        "blau/rot/grau/gelb",
+        "regenbogen"
+      ],
+      "category": "Tobogganing (Tourenrodel)",
+      "urlEn": "https://www.shop.gasserrodel.at/en/toboggan/Tobogganing/Touring-toboggan-1-seater.html",
+      "urlDe": "https://www.shop.gasserrodel.at/rodeln-aus-tirol/Tourenrodel/Tourenrodel-1-5-Sitzer-von-Gasser-Rodel.html",
+      "notes": null
+    },
+    {
+      "ref": "TR-2",
+      "nameEn": "Touring toboggan, double seater",
+      "nameDe": "Tourenrodel 2-Sitzer",
+      "priceEur": 159.0,
+      "colors": [
+        "rot/blau",
+        "rot/schwarz",
+        "blau/violett/grün",
+        "rot/schwarz/beige",
+        "blau/rot/grau/gelb",
+        "regenbogen"
+      ],
+      "category": "Tobogganing (Tourenrodel)",
+      "urlEn": "https://www.shop.gasserrodel.at/en/toboggan/Tobogganing/Touring-toboggan-double-seater.html",
+      "urlDe": "https://www.shop.gasserrodel.at/rodeln-aus-tirol/Tourenrodel/Tourenrodel-2-Sitzer-von-Gasser-Rodel.html",
+      "notes": null
+    },
+    {
+      "ref": "TR-J",
+      "nameEn": "Touring toboggan, youth",
+      "nameDe": "Tourenrodel Jugend",
+      "priceEur": 123.0,
+      "colors": [
+        "rot/blau",
+        "rot/schwarz",
+        "rot/schwarz/beige",
+        "blau/rot/grau/gelb",
+        "regenbogen"
+      ],
+      "category": "Tobogganing (Tourenrodel)",
+      "urlEn": "https://www.shop.gasserrodel.at/en/toboggan/Tobogganing/Touring-toboggan-youth.html",
+      "urlDe": "https://www.shop.gasserrodel.at/rodeln-aus-tirol/Tourenrodel/Tourenrodel-Jugend-von-Gasser-Rodel.html",
+      "notes": null
+    },
+    {
+      "ref": "TR-K",
+      "nameEn": "Touring toboggan, children",
+      "nameDe": "Tourenrodel Kinder",
+      "priceEur": 80.9,
+      "colors": [
+        "rot/blau",
+        "rot/schwarz",
+        "blau/violett/grün",
+        "rot/schwarz/beige",
+        "blau/rot/grau/gelb",
+        "regenbogen"
+      ],
+      "category": "Tobogganing (Tourenrodel)",
+      "urlEn": "https://www.shop.gasserrodel.at/en/toboggan/Tobogganing/Touring-toboggan-children.html",
+      "urlDe": "https://www.shop.gasserrodel.at/rodeln-aus-tirol/Tourenrodel/Tourenrodel-Kinder-von-Gasser-Rodel.html",
+      "notes": null
+    },
+    {
+      "ref": "TRR-1",
+      "nameEn": "Touring toboggan for races, single seater",
+      "nameDe": "Tourenrennrodel 1-Sitzer",
+      "priceEur": 421.0,
+      "colors": [
+        "Schwarz",
+        "Blau",
+        "Rot"
+      ],
+      "category": "Touring toboggan for races (Tourenrennrodel)",
+      "urlEn": "https://www.shop.gasserrodel.at/en/toboggan/Touring-toboggan/Touring-toboggan-for-races-single-seater.html",
+      "urlDe": "https://www.shop.gasserrodel.at/rodeln-aus-tirol/Tourenrennrodel/Tourenrennrodel-1-Sitzer.html",
+      "notes": null
+    },
+    {
+      "ref": "TRR-2",
+      "nameEn": "Touring toboggan for races, double seater",
+      "nameDe": "Tourenrennrodel 2-Sitzer",
+      "priceEur": 423.0,
+      "colors": [
+        "Schwarz",
+        "Blau",
+        "Rot"
+      ],
+      "category": "Touring toboggan for races (Tourenrennrodel)",
+      "urlEn": "https://www.shop.gasserrodel.at/en/toboggan/Touring-toboggan/Touring-toboggan-for-races-double-seater.html",
+      "urlDe": "https://www.shop.gasserrodel.at/rodeln-aus-tirol/Tourenrennrodel/Tourenrennrodel-2-Sitzer.html",
+      "notes": null
+    },
+    {
+      "ref": "TRS-1K",
+      "nameEn": "Special touring toboggan, single seater Classic",
+      "nameDe": "Tourenrodel Spezial Klassik 1-Sitzer",
+      "priceEur": 296.0,
+      "colors": [
+        "Schwarz",
+        "Blau",
+        "Rot"
+      ],
+      "category": "Touring toboggan classic (Tourenrodel Spezial Klassik)",
+      "urlEn": "https://www.shop.gasserrodel.at/en/Touring-toboggan-classic/Special-touring-toboggan-single-seater-Classic.html",
+      "urlDe": "https://www.shop.gasserrodel.at/rodeln-aus-tirol/Tourenrodel-Spezial-Klassik/Tourenrodel-Spezial-Klassik-1-Sitzer-von-Gasser-Rodel-oxid.html",
+      "notes": null
+    },
+    {
+      "ref": "TRS-1.5K",
+      "nameEn": "Special touring toboggan, 1½-seater Classic",
+      "nameDe": "Tourenrodel Spezial Klassik 1½-Sitzer",
+      "priceEur": 336.0,
+      "colors": [
+        "Schwarz",
+        "Blau",
+        "Rot"
+      ],
+      "category": "Touring toboggan classic (Tourenrodel Spezial Klassik)",
+      "urlEn": "https://www.shop.gasserrodel.at/en/Touring-toboggan-classic/Special-touring-toboggan-1-seater-Sport.html",
+      "urlDe": "https://www.shop.gasserrodel.at/rodeln-aus-tirol/Tourenrodel-Spezial-Klassik/Tourenrodel-Spezial-Klassik-1-Sitzer-von-Gasser-Rodel.html",
+      "notes": null
+    },
+    {
+      "ref": "TRS-2K",
+      "nameEn": "Special touring toboggan, double seater Classic",
+      "nameDe": "Tourenrodel Spezial Klassik 2-Sitzer",
+      "priceEur": 336.0,
+      "colors": [
+        "Schwarz",
+        "Blau",
+        "Rot"
+      ],
+      "category": "Touring toboggan classic (Tourenrodel Spezial Klassik)",
+      "urlEn": "https://www.shop.gasserrodel.at/en/Touring-toboggan-classic/Special-touring-toboggan-double-seater-Classic.html",
+      "urlDe": "https://www.shop.gasserrodel.at/rodeln-aus-tirol/Tourenrodel-Spezial-Klassik/Tourenrodel-Spezial-Klassik-2-Sitzer-von-Gasser-Rodel.html",
+      "notes": null
+    },
+    {
+      "ref": "TRS-1S",
+      "nameEn": "Special touring toboggan, single seater Sport",
+      "nameDe": "Tourenrodel Spezial Sport 1-Sitzer",
+      "priceEur": 315.0,
+      "colors": [
+        "Schwarz",
+        "Blau",
+        "Rot"
+      ],
+      "category": "Special touring toboggan (Tourenrodel Spezial Sport)",
+      "urlEn": "https://www.shop.gasserrodel.at/en/toboggan/Touring-toboggan-special/Special-touring-toboggan-single-seater-Sport.html",
+      "urlDe": "https://www.shop.gasserrodel.at/rodeln-aus-tirol/Tourenrodel-Spezial-Sport/Tourenrodel-Spezial-Sport-1-Sitzer-von-Gasser-Rodel-oxid.html",
+      "notes": null
+    },
+    {
+      "ref": "TRS-1.5S",
+      "nameEn": "Special touring toboggan, 1½-seater Sport",
+      "nameDe": "Tourenrodel Spezial Sport 1½-Sitzer",
+      "priceEur": 335.0,
+      "colors": [
+        "Schwarz",
+        "Blau",
+        "Rot"
+      ],
+      "category": "Special touring toboggan (Tourenrodel Spezial Sport)",
+      "urlEn": "https://www.shop.gasserrodel.at/en/toboggan/Touring-toboggan-special/Special-touring-toboggan-1-seater-Sport.html",
+      "urlDe": "https://www.shop.gasserrodel.at/rodeln-aus-tirol/Tourenrodel-Spezial-Sport/Tourenrodel-Spezial-Sport-1-Sitzer-von-Gasser-Rodel.html",
+      "notes": null
+    },
+    {
+      "ref": "TRS-2S",
+      "nameEn": "Special touring toboggan, double seater Sport",
+      "nameDe": "Tourenrodel Spezial Sport 2-Sitzer",
+      "priceEur": 355.0,
+      "colors": [
+        "Schwarz",
+        "Blau",
+        "Rot"
+      ],
+      "category": "Special touring toboggan (Tourenrodel Spezial Sport)",
+      "urlEn": "https://www.shop.gasserrodel.at/en/toboggan/Touring-toboggan-special/Special-touring-toboggan-double-seater-Sport.html",
+      "urlDe": "https://www.shop.gasserrodel.at/rodeln-aus-tirol/Tourenrodel-Spezial-Sport/Tourenrodel-Spezial-Sport-2-Sitzer-von-Gasser-Rodel.html",
+      "notes": null
+    },
+    {
+      "ref": "TRS-KS",
+      "nameEn": "Special touring toboggan, children Sport",
+      "nameDe": "Tourenrodel Spezial Sport Kinder",
+      "priceEur": 225.0,
+      "colors": [
+        "Schwarz",
+        "Blau",
+        "Rot"
+      ],
+      "category": "Special touring toboggan (Tourenrodel Spezial Sport)",
+      "urlEn": "https://www.shop.gasserrodel.at/en/toboggan/Touring-toboggan-special/Special-touring-toboggan-children-Sport.html",
+      "urlDe": "https://www.shop.gasserrodel.at/rodeln-aus-tirol/Tourenrodel-Spezial-Sport/Tourenrodel-Spezial-Sport-Kinder-von-Gasser-Rodel.html",
+      "notes": null
+    },
+    {
+      "ref": "N-1",
+      "nameEn": "Naviser 1-seater",
+      "nameDe": "Naviser 1-Sitzer",
+      "priceEur": 410.0,
+      "colors": [
+        "Schwarz",
+        "Blau",
+        "Rot"
+      ],
+      "category": "Naviser",
+      "urlEn": "https://www.shop.gasserrodel.at/en/toboggan/Naviser/Naviser-1-seater.html",
+      "urlDe": "https://www.shop.gasserrodel.at/rodeln-aus-tirol/Naviser/",
+      "notes": null
+    },
+    {
+      "ref": "N-2",
+      "nameEn": "Naviser 2-seater",
+      "nameDe": "Naviser 2-Sitzer",
+      "priceEur": 412.0,
+      "colors": [
+        "Schwarz",
+        "Blau",
+        "Rot"
+      ],
+      "category": "Naviser",
+      "urlEn": "https://www.shop.gasserrodel.at/en/toboggan/Naviser/Naviser-2-seater.html",
+      "urlDe": "https://www.shop.gasserrodel.at/rodeln-aus-tirol/Naviser/",
+      "notes": null
+    },
+    {
+      "ref": "RSR-1",
+      "nameEn": "Racing toboggan, single seater",
+      "nameDe": "Rennsportrodel 1-Sitzer",
+      "priceEur": 439.0,
+      "colors": [
+        "Schwarz",
+        "Blau",
+        "Rot"
+      ],
+      "category": "Racing toboggan (Rennsportrodel)",
+      "urlEn": "https://www.shop.gasserrodel.at/en/toboggan/racing-toboggan/Racing-toboggan-single-seater.html",
+      "urlDe": "https://www.shop.gasserrodel.at/rodeln-aus-tirol/Rennsportrodel/Rennsportrodel-1-Sitzer-von-Gasser-Rodel.html",
+      "notes": null
+    },
+    {
+      "ref": "RSR-2",
+      "nameEn": "Racing toboggan, double seater",
+      "nameDe": "Rennsportrodel 2-Sitzer",
+      "priceEur": 445.0,
+      "colors": [
+        "Schwarz",
+        "Blau",
+        "Rot"
+      ],
+      "category": "Racing toboggan (Rennsportrodel)",
+      "urlEn": "https://www.shop.gasserrodel.at/en/toboggan/racing-toboggan/Racing-toboggan-double-seater.html",
+      "urlDe": "https://www.shop.gasserrodel.at/rodeln-aus-tirol/Rennsportrodel/Rennsportrodel-2-Sitzer-von-Gasser-Rodel.html",
+      "notes": null
+    },
+    {
+      "ref": "RSR-J",
+      "nameEn": "Racing toboggan, youth",
+      "nameDe": "Rennsportrodel Jugend",
+      "priceEur": 409.0,
+      "colors": [
+        "Schwarz",
+        "Blau",
+        "Rot"
+      ],
+      "category": "Racing toboggan (Rennsportrodel)",
+      "urlEn": "https://www.shop.gasserrodel.at/en/toboggan/racing-toboggan/Racing-toboggan-youth.html",
+      "urlDe": "https://www.shop.gasserrodel.at/rodeln-aus-tirol/Rennsportrodel/Rennsportrodel-Jugend-von-Gasser-Rodel.html",
+      "notes": null
+    },
+    {
+      "ref": "RSR-K",
+      "nameEn": "Racing toboggan, children",
+      "nameDe": "Rennsportrodel Kinder",
+      "priceEur": 240.0,
+      "colors": [
+        "Schwarz",
+        "Blau",
+        "Rot"
+      ],
+      "category": "Racing toboggan (Rennsportrodel)",
+      "urlEn": "https://www.shop.gasserrodel.at/en/toboggan/racing-toboggan/Racing-toboggan-children.html",
+      "urlDe": "https://www.shop.gasserrodel.at/rodeln-aus-tirol/Rennsportrodel/Rennsportrodel-Kinder-von-Gasser-Rodel.html",
+      "notes": null
+    },
+    {
+      "ref": "SR-1",
+      "nameEn": "Sports toboggan, single seater",
+      "nameDe": "Sportrodel 1-Sitzer",
+      "priceEur": 231.0,
+      "colors": [
+        "rot/blau",
+        "rot/schwarz",
+        "rot/schwarz/beige",
+        "blau/rot/grau/gelb",
+        "regenbogen"
+      ],
+      "category": "Sport toboggan (Sportrodel)",
+      "urlEn": "https://www.shop.gasserrodel.at/en/toboggan/Tobogganing-oxid/Sports-toboggan-single-seater.html",
+      "urlDe": "https://www.shop.gasserrodel.at/rodeln-aus-tirol/Sportrodeln/Sportrodel-1-Sitzer-von-Gasser-Rodel.html",
+      "notes": null
+    },
+    {
+      "ref": "SR-2",
+      "nameEn": "Sports toboggan, double seater",
+      "nameDe": "Sportrodel 2-Sitzer",
+      "priceEur": 240.0,
+      "colors": [
+        "rot/blau",
+        "rot/schwarz",
+        "rot/schwarz/beige",
+        "blau/rot/grau/gelb",
+        "regenbogen"
+      ],
+      "category": "Sport toboggan (Sportrodel)",
+      "urlEn": "https://www.shop.gasserrodel.at/en/toboggan/Tobogganing-oxid/Sports-toboggan-double-seater.html",
+      "urlDe": "https://www.shop.gasserrodel.at/rodeln-aus-tirol/Sportrodeln/Sportrodel-2-Sitzer-von-Gasser-Rodel.html",
+      "notes": null
+    },
+    {
+      "ref": "SR-J",
+      "nameEn": "Sports toboggan, youth",
+      "nameDe": "Sportrodel Jugend",
+      "priceEur": 219.0,
+      "colors": [
+        "rot/blau",
+        "rot/schwarz",
+        "rot/schwarz/beige",
+        "blau/rot/grau/gelb",
+        "regenbogen"
+      ],
+      "category": "Sport toboggan (Sportrodel)",
+      "urlEn": "https://www.shop.gasserrodel.at/en/toboggan/Tobogganing-oxid/Sports-toboggan-youth.html",
+      "urlDe": "https://www.shop.gasserrodel.at/rodeln-aus-tirol/Sportrodeln/Sportrodel-Jugend-von-Gasser-Rodel.html",
+      "notes": null
+    },
+    {
+      "ref": "SR-K",
+      "nameEn": "Sports toboggan, children",
+      "nameDe": "Sportrodel Kinder",
+      "priceEur": 157.0,
+      "colors": [
+        "rot/blau",
+        "rot/schwarz",
+        "rot/schwarz/beige",
+        "blau/rot/grau/gelb",
+        "regenbogen"
+      ],
+      "category": "Sport toboggan (Sportrodel)",
+      "urlEn": "https://www.shop.gasserrodel.at/en/toboggan/Tobogganing-oxid/Sports-toboggan-children.html",
+      "urlDe": "https://www.shop.gasserrodel.at/rodeln-aus-tirol/Sportrodeln/Sportrodel-Kinder-von-Gasser-Rodel.html",
+      "notes": null
+    },
+    {
+      "ref": "VR-2",
+      "nameEn": "Rental toboggan 2-seater",
+      "nameDe": "Verleihrodel 2-Sitzer",
+      "priceEur": 183.0,
+      "colors": [],
+      "category": "Rental toboggan (Verleihrodel)",
+      "urlEn": "https://www.shop.gasserrodel.at/en/toboggan/Rental-toboggan/VR-2.html",
+      "urlDe": "https://www.shop.gasserrodel.at/rodeln-aus-tirol/Verleihrodel/Verleihrodel-2-Sitzer.html",
+      "notes": null
+    },
+    {
+      "ref": "VR-1.5",
+      "nameEn": "Rental toboggan 1½-seater",
+      "nameDe": "Verleihrodel 1½-Sitzer",
+      "priceEur": 173.0,
+      "colors": [],
+      "category": "Rental toboggan (Verleihrodel)",
+      "urlEn": "https://www.shop.gasserrodel.at/en/toboggan/Rental-toboggan/Rental-toboggan-1-seater.html",
+      "urlDe": "https://www.shop.gasserrodel.at/rodeln-aus-tirol/Verleihrodel/Verleihrodel-1-Sitzer.html",
+      "notes": null
+    },
+    {
+      "ref": "SSR-1",
+      "nameEn": "Super sports toboggan, single seater",
+      "nameDe": "Supersportrodel 1-Sitzer",
+      "priceEur": 638.0,
+      "colors": [],
+      "category": "Super sports toboggan (Supersportrodel)",
+      "urlEn": "https://www.shop.gasserrodel.at/en/toboggan/super-sports-toboggan/Super-sports-toboggan-single-seater.html",
+      "urlDe": "https://www.shop.gasserrodel.at/rodeln-aus-tirol/Supersportrodel/Supersportrodel-1-Sitzer.html",
+      "notes": null
+    },
+    {
+      "ref": "SSR-J",
+      "nameEn": "Super sports toboggan, youth",
+      "nameDe": "Supersportrodel Jugend",
+      "priceEur": 515.0,
+      "colors": [],
+      "category": "Super sports toboggan (Supersportrodel)",
+      "urlEn": "https://www.shop.gasserrodel.at/en/toboggan/super-sports-toboggan/Super-sports-toboggan-youth.html",
+      "urlDe": "https://www.shop.gasserrodel.at/rodeln-aus-tirol/Supersportrodel/Supersportrodel-Jugend.html",
+      "notes": null
+    },
+    {
+      "ref": "GRG-01",
+      "nameEn": "Engraving",
+      "nameDe": "Rodel Gravur",
+      "priceEur": 7.9,
+      "colors": [],
+      "category": "Equipment (Zubehör)",
+      "urlEn": "https://www.shop.gasserrodel.at/en/toboggan/Equipment/Engraving.html",
+      "urlDe": "https://www.shop.gasserrodel.at/rodeln-aus-tirol/Zubehoer/Rodel-Gravur-von-Gasser-Rodel.html",
+      "notes": "14 characters max, letters and numbers"
+    },
+    {
+      "ref": "Z-RZBK",
+      "nameEn": "Pulling lace with carabiner",
+      "nameDe": "Rodelziehband breit mit Karabiner",
+      "priceEur": 3.9,
+      "colors": [],
+      "category": "Equipment (Zubehör)",
+      "urlEn": "https://www.shop.gasserrodel.at/en/toboggan/Equipment/Pulling-lace-with-carabiner.html",
+      "urlDe": "https://www.shop.gasserrodel.at/rodeln-aus-tirol/Zubehoer/Rodelziehband-breit-mit-Karabiner.html",
+      "notes": "Width: 2 cm, Length: 2 m"
+    },
+    {
+      "ref": "Z-KSS",
+      "nameEn": "Protection for edging and tracks",
+      "nameDe": "Kanten- und Schienenschutz",
+      "priceEur": 4.3,
+      "colors": [],
+      "category": "Equipment (Zubehör)",
+      "urlEn": "https://www.shop.gasserrodel.at/en/toboggan/Equipment/Protection-for-edging-and-tracks.html",
+      "urlDe": "https://www.shop.gasserrodel.at/rodeln-aus-tirol/Zubehoer/Kanten-und-Schienenschutz.html",
+      "notes": "2 x 1 meter, foamed plastic"
+    },
+    {
+      "ref": "Z-GLR",
+      "nameEn": "Belt lace for guidance",
+      "nameDe": "Gurten-Lenkriemen",
+      "priceEur": 6.0,
+      "colors": [
+        "Schwarz",
+        "Rot"
+      ],
+      "category": "Equipment (Zubehör)",
+      "urlEn": "https://www.shop.gasserrodel.at/en/toboggan/Equipment/Belt-lace-for-guidance.html",
+      "urlDe": "https://www.shop.gasserrodel.at/rodeln-aus-tirol/Zubehoer/Gurten-Lenkriemen-von-Gasser-Rodel.html",
+      "notes": "Width: 2.5 cm, Length: 1.70 m"
+    },
+    {
+      "ref": "Z-LLR",
+      "nameEn": "Flat leather lace for guidance",
+      "nameDe": "Leder-Lenkriemen flach",
+      "priceEur": 25.5,
+      "colors": [],
+      "category": "Equipment (Zubehör)",
+      "urlEn": "https://www.shop.gasserrodel.at/en/toboggan/Equipment/Leder-Lenkriemen-flach-oxid-1.html",
+      "urlDe": "https://www.shop.gasserrodel.at/rodeln-aus-tirol/Zubehoer/Leder-Lenkriemen-flach.html",
+      "notes": "Width: 2.5 cm, Length: 1.70 m"
+    },
+    {
+      "ref": "RR-RG-01",
+      "nameEn": "Engraving + Belt lace for guidance set",
+      "nameDe": "Set Gravur + Lenkriemen",
+      "priceEur": 12.0,
+      "colors": [],
+      "category": "Equipment (Zubehör)",
+      "urlEn": "https://www.shop.gasserrodel.at/en/toboggan/Equipment/Leder-Lenkriemen-flach-oxid-1.html",
+      "urlDe": "https://www.shop.gasserrodel.at/rodeln-aus-tirol/Zubehoer/Set-bestehend-aus-Gravur-und-Lenkriemen.html",
+      "notes": "Set: engraving + belt lace"
+    },
+    {
+      "ref": "Z-KL",
+      "nameEn": "Children's backrest",
+      "nameDe": "Kinderlehne",
+      "priceEur": 28.0,
+      "colors": [],
+      "category": "Equipment (Zubehör)",
+      "urlEn": "https://www.shop.gasserrodel.at/en/toboggan/Equipment/Children-s-backrest.html",
+      "urlDe": "https://www.shop.gasserrodel.at/rodeln-aus-tirol/Zubehoer/Kinderlehne-von-Gasser-Rodel.html",
+      "notes": null
+    },
+    {
+      "ref": "Z-MS",
+      "nameEn": "Multi-Sole",
+      "nameDe": "Multi-Sohle",
+      "priceEur": 76.5,
+      "colors": [],
+      "category": "Equipment (Zubehör)",
+      "urlEn": "https://www.shop.gasserrodel.at/en/toboggan/Equipment/Multi-Sole.html",
+      "urlDe": "https://www.shop.gasserrodel.at/rodeln-aus-tirol/Zubehoer/Multi-Sohle-fuer-Ihre-Sicherheit.html",
+      "notes": "Sizes 36/37 → 46/47 (6 sizes)"
+    }
+  ]
+}
