@@ -1,0 +1,102 @@
+{% comment %}
+  luge-speed.liquid
+  Block de thème — Configurateur 3D LugeSpeed
+  Composant React : LugeSpeed.jsx → bundlé dans luge-configurator.iife.js
+  Props : img1…img5 (siège), wood (châssis), guide, skating (patins), hoop (arceaux)
+{% endcomment %}
+
+{% comment %} ─── Styles du canvas ─── {% endcomment %}
+<style>
+  #luge-speed-root {
+    width: 100%;
+    height: 700px;
+    display: block;
+    position: relative;
+  }
+  /*
+    NE PAS forcer height:auto ni width:100% sur le canvas.
+    Three.js gère les dimensions via renderer.setSize().
+  */
+  #luge-speed-root canvas {
+    display: block;
+  }
+</style>
+
+{% comment %} ─── Div React avec data-attributes depuis les block settings ─── {% endcomment %}
+<div
+  id="luge-speed-root"
+  data-img1="{{ block.settings.texture_1 | image_url: width: 512 }}"
+  data-img2="{{ block.settings.texture_2 | image_url: width: 512 }}"
+  data-img3="{{ block.settings.texture_3 | image_url: width: 512 }}"
+  data-img4="{{ block.settings.texture_4 | image_url: width: 512 }}"
+  data-img5="{{ block.settings.texture_5 | image_url: width: 512 }}"
+  data-wood="{{ block.settings.texture_wood | image_url: width: 512 }}"
+  data-guide="{{ block.settings.texture_guide | image_url: width: 512 }}"
+  data-skating="{{ block.settings.texture_skating | image_url: width: 512 }}"
+  data-hoop="{{ block.settings.texture_hoop | image_url: width: 512 }}"
+>
+</div>
+
+<script src="{{ 'luge-configurator.iife.js' | asset_url }}" defer></script>
+
+{% schema %}
+{
+  "name": "Configurateur Luge Speed",
+  "target": "section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Textures du siège (5 coloris)"
+    },
+    {
+      "type": "image_picker",
+      "id": "texture_1",
+      "label": "Couleur siège 1"
+    },
+    {
+      "type": "image_picker",
+      "id": "texture_2",
+      "label": "Couleur siège 2"
+    },
+    {
+      "type": "image_picker",
+      "id": "texture_3",
+      "label": "Couleur siège 3"
+    },
+    {
+      "type": "image_picker",
+      "id": "texture_4",
+      "label": "Couleur siège 4"
+    },
+    {
+      "type": "image_picker",
+      "id": "texture_5",
+      "label": "Couleur siège 5"
+    },
+    {
+      "type": "header",
+      "content": "Textures du châssis & accessoires"
+    },
+    {
+      "type": "image_picker",
+      "id": "texture_wood",
+      "label": "Bois / Châssis"
+    },
+    {
+      "type": "image_picker",
+      "id": "texture_guide",
+      "label": "Guide (lanière)"
+    },
+    {
+      "type": "image_picker",
+      "id": "texture_skating",
+      "label": "Patins"
+    },
+    {
+      "type": "image_picker",
+      "id": "texture_hoop",
+      "label": "Arceaux (hoop)"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,21 @@
+<div id="products-root"
+  data-api-url="{{ shop.metafields.app--gasser-test.api_url | default: 'https://tell-kick-ben-retention.trycloudflare.com' }}/api/products"
+  style="width: 100%;">
+</div>
+
+<script src="{{ 'products-cards.iife.js' | asset_url }}" defer></script>
+
+{% schema %}
+{
+  "name": "Produits DB",
+  "target": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "api_url",
+      "label": "URL de l'app",
+      "default": "https://tell-kick-ben-retention.trycloudflare.com"
+    }
+  ]
+}
+{% endschema %}

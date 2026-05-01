@@ -10,9 +10,9 @@ export default defineConfig({
   },
   build: {
     lib: {
-      entry: "storefront/entry.jsx",
-      name: "LugeConfigurator",
-      fileName: "luge-configurator",
+      entry: "storefront/products-cards.js",
+      name: "ProductsCards",
+      fileName: "products-cards",
       formats: ["iife"],
     },
     rollupOptions: {

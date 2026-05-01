@@ -2,25 +2,6 @@ import { useEffect, useRef } from "react";
 import * as THREE from "three";
 import { TaperedTubeGeometry } from "./TaperedTubeGeometry.js";
 import { loadTex } from "./utils.js";
-// // ======= Texture Seat =======
-// function loadTex(path, rx = 1, ry = 1.5) {
-//   if (!path) return new THREE.Texture();
-//   const tex = new THREE.TextureLoader().load(path);
-//   tex.wrapS = tex.wrapT = THREE.RepeatWrapping;
-//   tex.repeat.set(rx, -ry);
-//   tex.needsUpdate = true;
-//   return tex;
-// }
-
-// // ======= Texture Chassis and Guide =======
-// function loadTexBg(path, rx = 1, ry = 1.5) {
-//   if (!path) return new THREE.Texture();
-//   const tex = new THREE.TextureLoader().load(path);
-//   tex.wrapS = tex.wrapT = THREE.RepeatWrapping;
-//   tex.repeat.set(rx, -ry);
-//   tex.needsUpdate = true;
-//   return tex;
-// }
 
 // ======= Seat =======
 function createSitV(
@@ -42,7 +23,7 @@ function createSitV(
     new THREE.Vector3(-0.28, -0.1, 0),
   ];
   const curve = new THREE.CatmullRomCurve3(points);
-  const mat = new THREE.MeshStandardMaterial({ map: loadTex(colorPath) });
+  const mat = new THREE.MeshBasicMaterial({ map: loadTex(colorPath) });
   const mesh = new THREE.Mesh(
     new TaperedTubeGeometry(curve, 100, 0.04, 0.02, 2),
     mat,
@@ -68,10 +49,10 @@ function createSitH(
     new THREE.Vector3(-0, -0.04, 0),
     new THREE.Vector3(-0.4, -0.05, 0),
     new THREE.Vector3(-0.37, -0.1, 0),
-    new THREE.Vector3(-0.4, -0.1, 0),
+    new THREE.Vector3(-0.35, -0.1, 0),
   ];
   const curve = new THREE.CatmullRomCurve3(points);
-  const mat = new THREE.MeshStandardMaterial({ map: loadTex(colorPath) });
+  const mat = new THREE.MeshBasicMaterial({ map: loadTex(colorPath) });
   const mesh = new THREE.Mesh(
     new TaperedTubeGeometry(curve, 100, 0.04, 0.02, 2),
     mat,
@@ -90,7 +71,7 @@ function createTubeChassisSit(
   offRotY,
   offRotZ,
 ) {
-  const mat = new THREE.MeshStandardMaterial({
+  const mat = new THREE.MeshBasicMaterial({
     map: loadTex(colorPath),
   });
   const mesh = new THREE.Mesh(
@@ -122,7 +103,7 @@ function createTubeChassisLeft(
   offRotY,
   offRotZ,
 ) {
-  const mat = new THREE.MeshStandardMaterial({ map: loadTex(colorPath) });
+  const mat = new THREE.MeshBasicMaterial({ map: loadTex(colorPath) });
   const mesh = new THREE.Mesh(new THREE.CapsuleGeometry(0.028, 0.14, 32), mat);
   mesh.position.set(offsetX, offsetY, offsetZ);
   mesh.rotation.set(offRotX, offRotY, offRotZ);
@@ -147,7 +128,7 @@ function createTubeChassisRight(
   offRotY,
   offRotZ,
 ) {
-  const mat = new THREE.MeshStandardMaterial({ map: loadTex(colorPath) });
+  const mat = new THREE.MeshBasicMaterial({ map: loadTex(colorPath) });
   const mesh = new THREE.Mesh(
     new THREE.CapsuleGeometry(0.028, 0.14, 32, 64, 64),
     mat,
@@ -187,7 +168,7 @@ function createTubeHoopRight(
   ];
 
   const curve = new THREE.CatmullRomCurve3(points);
-  const mat = new THREE.MeshStandardMaterial({
+  const mat = new THREE.MeshBasicMaterial({
     map: loadTex(colorPath),
     side: THREE.DoubleSide,
   });
@@ -228,7 +209,7 @@ function createTubeHoopLeft(
   ];
 
   const curve = new THREE.CatmullRomCurve3(points);
-  const mat = new THREE.MeshStandardMaterial({
+  const mat = new THREE.MeshBasicMaterial({
     map: loadTex(colorPath),
     side: THREE.DoubleSide,
   });
@@ -260,11 +241,11 @@ function createCapBottomHoop(
   offRotY,
   offRotZ,
 ) {
-  const mat = new THREE.MeshStandardMaterial({
+  const mat = new THREE.MeshBasicMaterial({
     map: loadTex(colorPath),
     side: THREE.DoubleSide,
   });
-  const mesh = new THREE.Mesh(new THREE.SphereGeometry(0.038, 8, 8), mat);
+  const mesh = new THREE.Mesh(new THREE.SphereGeometry(0.04, 8, 8), mat);
   mesh.position.set(offsetX, offsetY, offsetZ);
   mesh.rotation.set(offRotX, offRotY, offRotZ);
   mesh.name = "CapBottomHoop";
@@ -279,7 +260,7 @@ function createCapTopHoop(
   offRotY,
   offRotZ,
 ) {
-  const mat = new THREE.MeshStandardMaterial({
+  const mat = new THREE.MeshBasicMaterial({
     map: loadTex(colorPath),
     side: THREE.DoubleSide,
   });
@@ -300,7 +281,7 @@ function createPatinRight(colorPath, offsetX, offsetY, offsetZ) {
     new THREE.Vector3(0.63, 0.28, -0.2), // retroussé avant
   ];
   const curve = new THREE.CatmullRomCurve3(points);
-  const mat = new THREE.MeshStandardMaterial({
+  const mat = new THREE.MeshBasicMaterial({
     map: loadTex(colorPath),
     side: THREE.DoubleSide,
   });
@@ -321,7 +302,7 @@ function createPatinLeft(colorPath, offsetX, offsetY, offsetZ) {
     new THREE.Vector3(0.63, 0.28, 0.2), // retroussé avant
   ];
   const curve = new THREE.CatmullRomCurve3(points);
-  const mat = new THREE.MeshStandardMaterial({
+  const mat = new THREE.MeshBasicMaterial({
     map: loadTex(colorPath),
     side: THREE.DoubleSide,
   });
@@ -342,11 +323,11 @@ function createCapBottom(
   offRotY,
   offRotZ,
 ) {
-  const mat = new THREE.MeshStandardMaterial({
+  const mat = new THREE.MeshBasicMaterial({
     map: loadTex(colorPath),
     side: THREE.DoubleSide,
   });
-  const mesh = new THREE.Mesh(new THREE.SphereGeometry(0.04, 8, 8), mat);
+  const mesh = new THREE.Mesh(new THREE.SphereGeometry(0.045, 8, 8), mat);
   mesh.position.set(offsetX, offsetY, offsetZ);
   mesh.rotation.set(offRotX, offRotY, offRotZ);
   mesh.name = "CapBottom";
@@ -361,7 +342,7 @@ function createCapTop(
   offRotY,
   offRotZ,
 ) {
-  const mat = new THREE.MeshStandardMaterial({
+  const mat = new THREE.MeshBasicMaterial({
     map: loadTex(colorPath),
     side: THREE.DoubleSide,
   });
@@ -393,7 +374,7 @@ function createGuide(
     new THREE.Vector3(0.7, 0.4, 0.15),
   ];
   const curve = new THREE.CatmullRomCurve3(points);
-  const mat = new THREE.MeshStandardMaterial({
+  const mat = new THREE.MeshBasicMaterial({
     map: loadTex(colorPath),
   });
   const mesh = new THREE.Mesh(
@@ -418,9 +399,9 @@ const Luge = ({ scene, selectedColor, backgroundColor, guide }) => {
 
     // ======= Seat =======
     const sitPartsV = [
-      createSitV(selectedColor, -0.7, 0.325, 0, 0, 1.57, 0),
-      createSitV(selectedColor, -0.6, 0.33, 0, 0, 1.57, 0),
-      createSitV(selectedColor, -0.5, 0.335, 0, 0, 1.57, 0),
+      createSitV(selectedColor, -0.7, 0.328, 0, 0, 1.57, 0),
+      createSitV(selectedColor, -0.6, 0.334, 0, 0, 1.57, 0),
+      createSitV(selectedColor, -0.5, 0.338, 0, 0, 1.57, 0),
       createSitV(selectedColor, -0.4, 0.34, 0, 0, 1.57, 0),
       createSitV(selectedColor, -0.3, 0.345, 0, 0, 1.57, 0),
       createSitV(selectedColor, -0.2, 0.35, 0, 0, 1.57, 0),
@@ -432,10 +413,12 @@ const Luge = ({ scene, selectedColor, backgroundColor, guide }) => {
 
     const sitPartsH = [
       createSitH(selectedColor, -0.4, 0.34, 0.2, 0, 0, 0.05),
-      createSitH(selectedColor, -0.4, 0.34, 0.1, 0, 0, 0.05),
-      createSitH(selectedColor, -0.4, 0.34, 0, 0, 0, 0.05),
-      createSitH(selectedColor, -0.4, 0.34, -0.1, 0, 0, 0.05),
-      createSitH(selectedColor, -0.4, 0.34, -0.2, 0, 0, 0.05),
+      createSitH(selectedColor, -0.4, 0.34, 0.13, 0, 0, 0.05),
+      createSitH(selectedColor, -0.4, 0.34, 0.06, 0, 0, 0.05),
+      createSitH(selectedColor, -0.4, 0.34, -0.01, 0, 0, 0.05),
+      createSitH(selectedColor, -0.4, 0.34, -0.08, 0, 0, 0.05),
+      createSitH(selectedColor, -0.4, 0.34, -0.15, 0, 0, 0.05),
+      createSitH(selectedColor, -0.4, 0.34, -0.22, 0, 0, 0.05),
     ];
     sitPartsH.forEach(({ mesh, mat }) => {
       lugeGroup.add(mesh);
@@ -495,8 +478,8 @@ const Luge = ({ scene, selectedColor, backgroundColor, guide }) => {
     chassisMatsRef.current.push(hoopLeft.mat);
 
     const capGroupBtmHoop = [
-      createCapBottomHoop(backgroundColor, -0.84, 0.235, 0.23, 0, 0, 0),
-      createCapBottomHoop(backgroundColor, -0.84, 0.235, -0.23, 0, 0, 0),
+      createCapBottomHoop(backgroundColor, -0.845, 0.23, 0.232, 0, 0, 0),
+      createCapBottomHoop(backgroundColor, -0.845, 0.23, -0.232, 0, 0, 0),
     ];
     capGroupBtmHoop.forEach(({ mesh, mat }) => {
       lugeGroup.add(mesh);
@@ -522,8 +505,8 @@ const Luge = ({ scene, selectedColor, backgroundColor, guide }) => {
     chassisMatsRef.current.push(patinsLeft.mat);
 
     const capGroupBtm = [
-      createCapBottom(backgroundColor, -0.88, 0.08, 0.27, 0, 0, 0),
-      createCapBottom(backgroundColor, -0.88, 0.08, -0.27, 0, 0, 0),
+      createCapBottom(backgroundColor, -0.9, 0.07, 0.27, 0, 0, 0),
+      createCapBottom(backgroundColor, -0.9, 0.07, -0.27, 0, 0, 0),
     ];
     capGroupBtm.forEach(({ mesh, mat }) => {
       lugeGroup.add(mesh);
