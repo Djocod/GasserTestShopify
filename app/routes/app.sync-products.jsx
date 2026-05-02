@@ -16,7 +16,25 @@ export const action = async ({ request }) => {
   let errors = [];
 
   for (const product of products) {
-    const res = await admin.graphql(
+    const hasColors = product.colors.length > 0;
+
+    // ── Étape 1 : créer le produit ──────────────────────────────────────────
+    const productInput = {
+      title: product.nameEn,
+      descriptionHtml: "<p>" + product.nameDe + "</p>",
+      productType: product.category,
+    };
+
+    if (hasColors) {
+      productInput.productOptions = [
+        {
+          name: "Couleur",
+          values: product.colors.map((c) => ({ name: c.color })),
+        },
+      ];
+    }
+
+    const createRes = await admin.graphql(
       `#graphql
       mutation createProduct($input: ProductCreateInput!) {
         productCreate(product: $input) {
@@ -29,48 +47,76 @@ export const action = async ({ request }) => {
           userErrors { field message }
         }
       }`,
-      {
-        variables: {
-          input: {
-            title: product.nameEn,
-            descriptionHtml: "<p>" + product.nameDe + "</p>",
-            productType: product.category,
-          },
-        },
-      },
+      { variables: { input: productInput } },
     );
 
-    const data = await res.json();
-    const userErrors = data.data?.productCreate?.userErrors ?? [];
+    const createData = await createRes.json();
+    const createErrors = createData.data?.productCreate?.userErrors ?? [];
 
-    if (userErrors.length > 0) {
-      errors.push({ ref: product.ref, errors: userErrors });
+    if (createErrors.length > 0) {
+      errors.push({ ref: product.ref, errors: createErrors });
       continue;
     }
 
-    const variantId = data.data.productCreate.product.variants.edges[0].node.id;
-    const productId = data.data.productCreate.product.id;
+    const productId = createData.data.productCreate.product.id;
+    const defaultVariantId =
+      createData.data.productCreate.product.variants.edges[0].node.id;
 
-    await admin.graphql(
-      `#graphql
-      mutation updateVariant($productId: ID!, $variants: [ProductVariantsBulkInput!]!) {
-        productVariantsBulkUpdate(productId: $productId, variants: $variants) {
-          userErrors { field message }
-        }
-      }`,
-      {
-        variables: {
-          productId,
-          variants: [
-            {
-              id: variantId,
-              price: product.priceEur.toString(),
-              inventoryItem: { sku: product.ref },
-            },
-          ],
+    // ── Étape 2a : produit sans couleurs → mettre à jour la variante par défaut
+    if (!hasColors) {
+      await admin.graphql(
+        `#graphql
+        mutation updateVariant($productId: ID!, $variants: [ProductVariantsBulkInput!]!) {
+          productVariantsBulkUpdate(productId: $productId, variants: $variants) {
+            userErrors { field message }
+          }
+        }`,
+        {
+          variables: {
+            productId,
+            variants: [
+              {
+                id: defaultVariantId,
+                price: product.priceEur.toString(),
+                inventoryItem: { sku: product.ref },
+              },
+            ],
+          },
         },
-      },
-    );
+      );
+    } else {
+      // ── Étape 2b : produit avec couleurs → créer une variante par couleur
+      await admin.graphql(
+        `#graphql
+        mutation createVariants($productId: ID!, $variants: [ProductVariantsBulkInput!]!) {
+          productVariantsBulkCreate(productId: $productId, variants: $variants) {
+            productVariants { id title }
+            userErrors { field message }
+          }
+        }`,
+        {
+          variables: {
+            productId,
+            variants: product.colors.map((c) => ({
+              price: product.priceEur.toString(),
+              inventoryItem: { sku: product.ref + "-" + c.color },
+              optionValues: [{ optionName: "Couleur", name: c.color }],
+            })),
+          },
+        },
+      );
+
+      // Supprimer la variante par défaut créée automatiquement ("Default Title")
+      await admin.graphql(
+        `#graphql
+        mutation deleteVariant($productId: ID!, $variantsIds: [ID!]!) {
+          productVariantsBulkDelete(productId: $productId, variantsIds: $variantsIds) {
+            userErrors { field message }
+          }
+        }`,
+        { variables: { productId, variantsIds: [defaultVariantId] } },
+      );
+    }
 
     created++;
   }
@@ -90,8 +136,15 @@ export default function SyncProducts() {
         {result && (
           <s-banner tone={result.errors?.length > 0 ? "warning" : "success"}>
             {result.created} produit(s) créé(s) dans Shopify.
-            {result.errors?.length > 0 &&
-              " " + result.errors.length + " erreur(s)."}
+            {result.errors?.length > 0 && (
+              <ul>
+                {result.errors.map((e, i) => (
+                  <li key={i}>
+                    {e.ref}: {e.errors.map((err) => err.message).join(", ")}
+                  </li>
+                ))}
+              </ul>
+            )}
           </s-banner>
         )}
         <s-paragraph>

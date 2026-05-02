@@ -644,7 +644,18 @@ const LugeSpeed = ({
   guide: guideProp,
   skating: skatingProp,
   hoop: hoopProp,
+  variantIds,
 }) => {
+  const variantIdsArray = useMemo(
+    () =>
+      variantIds
+        ? variantIds
+            .split(",")
+            .map((id) => id.trim())
+            .filter(Boolean)
+        : [],
+    [variantIds],
+  );
   const COLORS = useMemo(
     () => [
       {
@@ -697,6 +708,7 @@ const LugeSpeed = ({
   );
 
   const [selectedColor, setSelectedColor] = useState(COLORS[0].value);
+  const [selectedColorIndex, setSelectedColorIndex] = useState(0);
   const [backgroundColor, setBackgroundColor] = useState(COLORS[0].bg);
   const [guideColor, setGuideColor] = useState(COLORS[0].guide);
   const [hoopColor, setHoopColor] = useState(COLORS[0].hoop);
@@ -707,6 +719,26 @@ const LugeSpeed = ({
   const [wireMode, setWireMode] = useState(false);
   const [infoOpen, setInfoOpen] = useState(false);
   const [loaded, setLoaded] = useState(false);
+  const [cartStatus, setCartStatus] = useState(null); // null | 'adding' | 'added' | 'error'
+
+  const addToCart = async () => {
+    const variantId = variantIdsArray[selectedColorIndex];
+    if (!variantId) return;
+    setCartStatus("adding");
+    try {
+      const res = await fetch("/cart/add.js", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id: Number(variantId), quantity: 1 }),
+      });
+      if (!res.ok) throw new Error("cart error");
+      setCartStatus("added");
+    } catch {
+      setCartStatus("error");
+    } finally {
+      setTimeout(() => setCartStatus(null), 2500);
+    }
+  };
 
   // Refs pour Three.js
   const mountRef = useRef(null);
@@ -1088,12 +1120,13 @@ const LugeSpeed = ({
           Couleur siège
         </div>
         <div style={{ display: "flex", gap: 6 }}>
-          {COLORS.map((color) => (
+          {COLORS.map((color, idx) => (
             <button
               key={color.id}
               title={color.id}
               onClick={(e) => {
                 e.preventDefault();
+                setSelectedColorIndex(idx);
                 setSelectedColor(color.value);
                 setBackgroundColor(color.bg);
                 setGuideColor(color.guide);
@@ -1249,6 +1282,56 @@ const LugeSpeed = ({
           ),
         )}
       </div>
+
+      {/* Bouton Ajouter au panier */}
+      {variantIdsArray.length > 0 && (
+        <div
+          style={{
+            position: "absolute",
+            top: 16,
+            right: infoOpen ? 236 : 16,
+            zIndex: 12,
+            transition: "right 0.3s cubic-bezier(0.25,0.46,0.45,0.94)",
+          }}
+        >
+          <button
+            onClick={addToCart}
+            disabled={cartStatus === "adding"}
+            style={{
+              fontFamily: "'DM Mono', monospace",
+              fontSize: 11,
+              letterSpacing: "0.1em",
+              textTransform: "uppercase",
+              padding: "8px 14px",
+              borderRadius: 8,
+              border: "1px solid rgba(255,255,255,0.15)",
+              background:
+                cartStatus === "added"
+                  ? "rgba(80,200,80,0.15)"
+                  : cartStatus === "error"
+                    ? "rgba(200,80,80,0.15)"
+                    : "rgba(232,248,64,0.1)",
+              color:
+                cartStatus === "added"
+                  ? "#80e880"
+                  : cartStatus === "error"
+                    ? "#e88080"
+                    : "#eaff00",
+              cursor: cartStatus === "adding" ? "wait" : "pointer",
+              backdropFilter: "blur(12px)",
+              transition: "all 0.2s ease",
+            }}
+          >
+            {cartStatus === "adding"
+              ? "Ajout..."
+              : cartStatus === "added"
+                ? "✓ Ajouté"
+                : cartStatus === "error"
+                  ? "✗ Erreur"
+                  : "+ Panier"}
+          </button>
+        </div>
+      )}
 
       {/* Composant 3D */}
       {scene && (

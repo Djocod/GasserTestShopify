@@ -32,6 +32,7 @@
   data-img5="{{ block.settings.texture_5 | image_url: width: 512 }}"
   data-wood="{{ block.settings.texture_wood | image_url: width: 512 }}"
   data-guide="{{ block.settings.texture_guide | image_url: width: 512 }}"
+  data-variant-ids="{% for variant in block.settings.product.variants %}{{ variant.id }}{% unless forloop.last %},{% endunless %}{% endfor %}"
 >
 </div>
 
@@ -88,6 +89,15 @@
       "type": "image_picker",
       "id": "texture_guide",
       "label": "Guide (lanière)"
+    },
+    {
+      "type": "header",
+      "content": "Produit Shopify"
+    },
+    {
+      "type": "product",
+      "id": "product",
+      "label": "Produit associé (pour le panier)"
     }
   ]
 }

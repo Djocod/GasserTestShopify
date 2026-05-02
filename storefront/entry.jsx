@@ -24,6 +24,7 @@ function mountComponent(id, Component) {
       guide: el.dataset.guide || "",
       skating: el.dataset.skating || "",
       hoop: el.dataset.hoop || "",
+      variantIds: el.dataset.variantIds || "",
     };
 
     createRoot(el).render(<Component {...props} />);
