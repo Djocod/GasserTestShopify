@@ -25,28 +25,19 @@ export const action = async ({ request }) => {
       productType: product.category,
     };
 
-    if (hasColors) {
-      productInput.productOptions = [
-        {
-          name: "Couleur",
-          values: product.colors.map((c) => ({ name: c.color })),
-        },
-      ];
-    }
-
     const createRes = await admin.graphql(
       `#graphql
-      mutation createProduct($input: ProductCreateInput!) {
-        productCreate(product: $input) {
-          product {
-            id
-            variants(first: 1) {
-              edges { node { id } }
-            }
-          }
-          userErrors { field message }
+  mutation createProduct($input: ProductCreateInput!) {
+    productCreate(product: $input) {
+      product {
+        id
+        variants(first: 1) {
+          edges { node { id } }
         }
-      }`,
+      }
+      userErrors { field message }
+    }
+  }`,
       { variables: { input: productInput } },
     );
 
@@ -61,6 +52,29 @@ export const action = async ({ request }) => {
     const productId = createData.data.productCreate.product.id;
     const defaultVariantId =
       createData.data.productCreate.product.variants.edges[0].node.id;
+
+    // ── Étape 1b : ajouter les options si couleurs ──────────────────────────
+    if (hasColors) {
+      await admin.graphql(
+        `#graphql
+    mutation createOptions($productId: ID!, $options: [OptionCreateInput!]!) {
+      productOptionsCreate(productId: $productId, options: $options) {
+        userErrors { field message }
+      }
+    }`,
+        {
+          variables: {
+            productId,
+            options: [
+              {
+                name: "Couleur",
+                values: product.colors.map((c) => ({ name: c.color })),
+              },
+            ],
+          },
+        },
+      );
+    }
 
     // ── Étape 2a : produit sans couleurs → mettre à jour la variante par défaut
     if (!hasColors) {
